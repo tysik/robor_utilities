@@ -1,0 +1,44 @@
+<library path="lib/librobor_utilities_gui">
+
+  <class name="State Estimator"
+         type="robor_utilities::StateEstimatorPanel"
+         base_class_type="rviz::Panel">
+    <description>
+      State Estimator Panel
+    </description>
+  </class>
+
+  <class name="Simulator"
+         type="robor_utilities::SimulatorPanel"
+         base_class_type="rviz::Panel">
+    <description>
+      Simulator Panel
+    </description>
+  </class>
+
+  <class name="Reference Generator"
+         type="robor_utilities::ReferenceGeneratorPanel"
+         base_class_type="rviz::Panel">
+    <description>
+      Reference Generator Panel
+    </description>
+  </class>
+
+  <class name="Data Recorder"
+         type="robor_utilities::DataRecorderPanel"
+         base_class_type="rviz::Panel">
+    <description>
+      Data Recorder Panel
+    </description>
+  </class>
+
+  <class name="Path"
+         type="robor_utilities::PathDisplay"
+         base_class_type="rviz::Display">
+    <description>
+      Path Display
+    </description>
+    <message_type>nav_msgs/Odometry</message_type>
+  </class>
+
+</library>

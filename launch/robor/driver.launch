@@ -1,0 +1,37 @@
+<!-- Youbot base driver -->
+<launch>
+
+  <arg name="simulator"/>
+  <arg name="manager"/>
+  <arg name="loop_rate"/>
+
+  <arg name="use_only_odometry"/>
+  <arg name="use_optitrack"/>
+  <arg name="use_map"/>
+  <arg name="do_mapping"/>
+
+  <arg name="map_frame"/>
+  <arg name="odom_frame"/>
+  <arg name="robot_frame"/>
+  <arg name="reference_frame"/>
+
+  <arg name="front_scanner_frame"/>
+  <arg name="rear_scanner_frame"/>
+
+  <!--<node pkg="youbot_base_driver" type="youbot_base_driver_node" name="youbot_base_driver" machine="yb_pc">-->
+  <node pkg="nodelet" type="nodelet" name="youbot_base_driver" args="load youbot_base_driver/YoubotBaseDriver $(arg manager)" machine="yb_pc">
+    <param name="publish_tf"       value="false"   if="$(arg use_optitrack)"/>
+
+    <param name="loop_rate"        value="$(arg loop_rate)"/>
+
+    <param name="parent_frame_id"  value="$(arg odom_frame)"/>
+    <param name="child_frame_id"   value="$(arg robot_frame)"/>
+
+    <param name="config_file_path" value="/home/youbot/robor_ws/src/youbot_driver/config"/>
+    <param name="config_file_name" value="youbot-base"/>
+
+    <remap from="odom" to="robot_state" if="$(arg use_only_odometry)"/>
+  </node>
+
+</launch>
+<!-- -->

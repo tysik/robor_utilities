@@ -1,0 +1,184 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 0
+    Name: Displays
+    Property Tree Widget:
+      Expanded: ~
+      Splitter Ratio: 0.5
+    Tree Height: 389
+  - Class: rviz/Selection
+    Name: Selection
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: ""
+  - Class: Data Recorder
+    Name: Data Recorder
+  - Class: Manual Controller
+    Name: Manual Controller
+  - Class: Reference Generator
+    Name: Reference Generator
+  - Class: Simulator
+    Name: Simulator
+  - Class: Feedback Controller
+    Name: Feedback Controller
+  - Class: State Estimator
+    Name: State Estimator
+  - Class: Obstacle Publisher
+    Name: Obstacle Publisher
+  - Class: Potentials Controller
+    Name: Potentials Controller
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Line Style:
+        Line Width: 0.0299999993
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 20
+      Reference Frame: map
+      Value: true
+    - Class: Path
+      Color: 20; 153; 225
+      Enabled: true
+      History Length: 1000
+      Name: Robot Path
+      Topic: /robot_state
+      Unreliable: true
+      Value: true
+    - Class: Path
+      Color: 255; 0; 0
+      Enabled: true
+      History Length: 1000
+      Name: Reference Path
+      Topic: /reference_state
+      Unreliable: true
+      Value: true
+    - Circles color: 170; 0; 0
+      Class: Obstacles
+      Enabled: true
+      Margin color: 0; 170; 0
+      Name: Obstacles
+      Opacity: 0.75
+      Segments color: 170; 170; 0
+      Segments thickness: 0.0299999993
+      Topic: /obstacles
+      Unreliable: true
+      Value: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        front_scanner:
+          Value: true
+        map:
+          Value: true
+        odom:
+          Value: true
+        rear_scanner:
+          Value: true
+        reference:
+          Value: true
+        robot:
+          Value: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        map:
+          odom:
+            reference:
+              {}
+            robot:
+              front_scanner:
+                {}
+              rear_scanner:
+                {}
+      Update Interval: 0
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /yb_marker
+      Name: YouBot
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: map
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/MoveCamera
+  Value: true
+  Views:
+    Current:
+      Angle: 0
+      Class: rviz/TopDownOrtho
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.0599999987
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Name: Current View
+      Near Clip Distance: 0.00999999978
+      Scale: 114.373047
+      Target Frame: world
+      Value: TopDownOrtho (rviz)
+      X: 0
+      Y: 0
+    Saved: ~
+Window Geometry:
+  Data Recorder:
+    collapsed: false
+  Displays:
+    collapsed: false
+  Feedback Controller:
+    collapsed: false
+  Height: 1056
+  Hide Left Dock: false
+  Hide Right Dock: false
+  Manual Controller:
+    collapsed: false
+  Obstacle Publisher:
+    collapsed: false
+  Potentials Controller:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd00000004000000000000019d00000402fc020000000afb0000001200530065006c0065006300740069006f006e00000000280000009b0000006400fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afc0000000000000179000001790100001dfa000000000100000003fb0000001200530069006d0075006c00610074006f00720100000000ffffffff0000016800fffffffb00000026005200650066006500720065006e00630065002000470065006e0065007200610074006f00720100000000ffffffff0000016e00fffffffb0000001a00440061007400610020005200650063006f00720064006500720100000000000001c50000019d00fffffffb0000001e0053007400610074006500200045007300740069006d00610074006f007200000001260000009f0000006c00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb00000024004f00620073007400610063006c00650020005000750062006c00690073006800650072010000017f00000283000001bf00ffffff00000001000001b500000402fc0200000005fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fc00000000000001e4000000fb0100001dfa000000010100000002fb0000000a005600690065007700730100000000ffffffff0000010f00fffffffb000000100044006900730070006c006100790073010000058a000001b50000016a00fffffffc000001ea00000218000001360100001dfa000000000100000006fb00000022004d0061006e00750061006c00200043006f006e00740072006f006c006c006500720100000000ffffffff0000017600fffffffb000000260046006500650064006200610063006b00200043006f006e00740072006f006c006c006500720100000000ffffffff000001b500fffffffb00000024005500720061006b00750062006f00200043006f006e00740072006f006c006c006500720000000000ffffffff0000000000000000fb0000002a0050006f00740065006e007400690061006c007300200043006f006e00740072006f006c006c006500720100000000ffffffff000001b500fffffffb00000020004f00620073007400610063006c0065002000410076006f00690064006500720000000000ffffffff0000000000000000fb00000020004f00620073007400610063006c0065002000410076006f00690064006500720000000000ffffffff0000000000000000fb00000034005600690072007400750061006c0020004f00620073007400610063006c00650020005000750062006c00690073006800650072000000012f000001b70000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073f0000003efc0100000002fb0000000800540069006d006500000000000000073f0000030000fffffffb0000000800540069006d00650100000000000004500000000000000000000003e10000040200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730000000000ffffffff0000000000000000
+  Reference Generator:
+    collapsed: false
+  Selection:
+    collapsed: false
+  Simulator:
+    collapsed: false
+  State Estimator:
+    collapsed: false
+  Time:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1855
+  X: 65
+  Y: 24

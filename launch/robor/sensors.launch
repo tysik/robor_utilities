@@ -1,0 +1,73 @@
+<!-- Robor sensors -->
+<launch>
+
+  <arg name="simulator"/>
+  <arg name="manager"/>
+  <arg name="loop_rate"/>
+
+  <arg name="use_only_odometry"/>
+  <arg name="use_optitrack"/>
+  <arg name="use_map"/>
+  <arg name="do_mapping"/>
+
+  <arg name="map_frame"/>
+  <arg name="odom_frame"/>
+  <arg name="robot_frame"/>
+  <arg name="reference_frame"/>
+
+  <arg name="front_scanner_frame"/>
+  <arg name="rear_scanner_frame"/>
+
+  <node pkg="urg_node" type="urg_node" name="front_hokuyo" machine="yb_pc">
+    <param name="serial_port"    value="/dev/sensors/hokuyo_H1320250"/>
+    <param name="serial_baud"    value="115200"/>
+
+    <param name="frame_id"       value="$(arg front_scanner_frame)"/>
+
+    <param name="calibrate_time" value="true"/>
+    <param name="time_offset"    value="0.0"/>
+
+    <param name="publish_intensity" value="false"/>
+    <param name="publish_multiecho" value="false"/>
+
+    <param name="angle_min"      value="-2.0862"/>
+    <param name="angle_max"      value="2.0923"/>
+
+    <param name="cluster"        value="1"/>
+    <param name="skip"           value="0"/>
+
+    <remap from="scan" to="front_scan"/>
+  </node>
+
+  <node pkg="urg_node" type="urg_node" name="rear_hokuyo" machine="yb_pc">
+    <param name="serial_port"    value="/dev/sensors/hokuyo_H0904847"/>
+    <param name="serial_baud"    value="115200"/>
+
+    <param name="frame_id"       value="$(arg rear_scanner_frame)"/>
+
+    <param name="calibrate_time" value="true"/>
+    <param name="time_offset"    value="0.0"/>
+
+    <param name="publish_intensity" value="false"/>
+    <param name="publish_multiecho" value="false"/>
+
+    <param name="angle_min"      value="-2.0862"/>
+    <param name="angle_max"      value="2.0923"/>
+
+    <param name="cluster"        value="1"/>
+    <param name="skip"           value="0"/>
+
+    <remap from="scan" to="rear_scan"/>
+  </node>
+
+<!--
+<node name="ueye" type="camera" pkg="ueye" output="screen" machine="yb_pc"/>
+
+<node name="image_view" type="image_view" pkg="image_view" machine="usr_pc">
+  <param name="image_transport" value="theora"/>
+  <remap from="image" to="/image_raw"/>
+</node>
+  -->
+
+</launch>
+<!-- -->

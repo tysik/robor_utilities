@@ -1,0 +1,43 @@
+<library path="lib/librobor_utilities_nodelets">
+
+  <class name="robor_utilities/StateEstimator"
+         type="robor_utilities::StateEstimatorNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      State Estimator Nodelet
+    </description>
+  </class>
+
+  <class name="robor_utilities/Simulator"
+         type="robor_utilities::SimulatorNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      Simulator Nodelet
+    </description>
+  </class>
+
+  <class name="robor_utilities/ReferenceGenerator"
+         type="robor_utilities::ReferenceGeneratorNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      Reference Generator Nodelet
+    </description>
+  </class>
+
+  <class name="robor_utilities/DataRecorder"
+         type="robor_utilities::DataRecorderNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      Data Recorder Nodelet
+    </description>
+  </class>
+
+  <class name="robor_utilities/YoubotVisualizer"
+         type="robor_utilities::YoubotVisualizerNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      Youbot Visualizer Nodelet
+    </description>
+  </class>
+
+</library>

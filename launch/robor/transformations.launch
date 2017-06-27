@@ -1,0 +1,100 @@
+<!-- Robor coordinate frames and transformations -->
+<launch>
+
+  <arg name="simulator"/>
+  <arg name="manager"/>
+  <arg name="loop_rate"/>
+
+  <arg name="use_only_odometry"/>
+  <arg name="use_optitrack"/>
+  <arg name="use_map"/>
+  <arg name="do_mapping"/>
+
+  <arg name="map_frame"/>
+  <arg name="odom_frame"/>
+  <arg name="robot_frame"/>
+  <arg name="reference_frame"/>>
+
+  <arg name="front_scanner_frame"/>
+  <arg name="rear_scanner_frame"/>
+  
+  <!-- Static tfs -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_front_scanner" args="0.220509 0 0 0 0 0 $(arg robot_frame) $(arg front_scanner_frame)" machine="yb_pc"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_rear_scanner" args="-0.246139 0 0 3.141592 0 0 $(arg robot_frame) $(arg rear_scanner_frame)" machine="yb_pc"/>
+
+
+  <group if="$(arg simulator)">
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)" machine="yb_pc"/>
+  </group>
+
+
+  <group if="$(arg use_only_odometry)">
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)" machine="yb_pc"/>
+  </group>
+
+
+  <group if="$(arg use_optitrack)">
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)" machine="yb_pc"/>
+
+    <node pkg="mocap_optitrack" type="mocap_node" name="mocap_node" machine="usr_pc">
+      <param name="rigid_bodies/1/child_frame_id"      value="$(arg robot_frame)"/>
+      <param name="rigid_bodies/1/parent_frame_id"     value="$(arg odom_frame)"/>
+
+      <param name="optitrack_config/multicast_address" value="239.255.42.99"/>
+    </node>
+  </group>
+
+ 
+  <group if="$(arg use_map)">
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/odometry_map/map.yaml" machine="usr_pc"/>
+
+    <node pkg="amcl" type="amcl" name="amcl" machine="usr_pc">
+      <param name="global_frame_id" value="$(arg map_frame)"/>
+      <param name="odom_frame_id" value="$(arg odom_frame)"/>
+      <param name="base_frame_id" value="$(arg robot_frame)"/>
+
+      <param name="odom_model_type" value="omni"/>
+
+      <param name="initial_pose_x" value="0.0"/>
+      <param name="initial_pose_y" value="0.0"/>
+      <param name="initial_angle" value="0.0"/>
+
+      <param name="min_particles" value="500"/>
+      <param name="max_particles" value="2000"/>
+
+      <!--<remap from="scan" to="front_scan"/>-->
+    </node>
+  </group>
+
+  
+  <group if="$(arg do_mapping)">
+    <param name="robot_id" value="1"/>
+    <param name="scan_input_topic" value="karto_in"/>
+    <param name="scan_output_topic" value="karto_out"/>
+    <param name="laser_topic" value="scan"/>
+    <param name="map_topic" value="map"/>
+
+    <param name="laser_frame" value="$(arg robot_frame)"/>
+    <param name="robot_frame" value="$(arg robot_frame)"/>
+    <param name="odometry_frame" value="$(arg odom_frame)"/>
+    <param name="offset_frame" value="offset"/>
+    <param name="map_frame" value="$(arg map_frame)"/>
+
+    <param name="map_service" value="static_map"/>
+
+    <node name="mapper" pkg="nav2d_karto" type="mapper" machine="usr_pc">
+      <param name="grid_resolution" value="0.05"/>
+      <param name="range_threshold" value="30.0"/>
+      <param name="map_update_rate" value="1"/>
+      <param name="publish_pose_graph" value="true"/>
+      <param name="max_covariance" value="0.05"/>
+      <param name="min_map_size" value="50"/>
+
+      <rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
+
+      <!--<remap from="scan" to="front_scan"/>-->
+    </node>
+  </group>
+  
+</launch>
+<!-- -->
