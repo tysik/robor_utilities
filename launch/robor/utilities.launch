@@ -102,11 +102,13 @@
     <param name="frame_id"       value="$(arg robot_frame)"/>
   </node>
 
+  <!--
   <node name="joy" pkg="joy" type="joy_node" machine="usr_pc">
     <param name="dev" type="string" value="/dev/input/js0"/>
     <param name="deadzone"          value="0.08"/>
     <param name="autorepeat_rate"   value="0"/>
   </node>
+  -->
 
 </launch>
 <!-- -->
