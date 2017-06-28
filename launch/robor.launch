@@ -31,7 +31,7 @@
 
   <!-- Nodelet manager -->
   <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" machine="yb_pc">
-    <param name="num_worker_threads" value="30"/>
+    <param name="num_worker_threads" value="25"/>
   </node>
   
   <include file="$(find robor_utilities)/launch/robor/driver.launch"          pass_all_args="true" unless="$(arg simulator)"/>

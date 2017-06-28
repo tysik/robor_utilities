@@ -65,7 +65,7 @@
   IP Address 192.168.0.15
   Subnet Mask 255.255.255.0
   Default Gateway 192.168.0.1
-  -->
+
   <node pkg="urg_node" type="urg_node" name="new_scanner" output="screen">
     <param name="ip_address" value="192.168.0.15"/>
     <param name="ip_port" value="10940"/>
