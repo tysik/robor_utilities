@@ -1,0 +1,334 @@
+Panels:
+  - Class: rviz/Selection
+    Name: Selection
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: Merged Scan
+  - Class: Data Recorder
+    Name: Data Recorder
+  - Class: Manual Controller
+    Name: Manual Controller
+  - Class: Reference Generator
+    Name: Reference Generator
+  - Class: Simulator
+    Name: Simulator
+  - Class: Feedback Controller
+    Name: Feedback Controller
+  - Class: State Estimator
+    Name: State Estimator
+  - Class: Obstacle Tracker
+    Name: Obstacle Tracker
+  - Class: Scans Merger
+    Name: Scans Merger
+  - Class: Obstacle Publisher
+    Name: Obstacle Publisher
+  - Class: Obstacle Extractor
+    Name: Obstacle Extractor
+  - Class: Potentials Controller
+    Name: Potentials Controller
+  - Class: rviz/Displays
+    Help Height: 0
+    Name: Displays
+    Property Tree Widget:
+      Expanded: ~
+      Splitter Ratio: 0.5
+    Tree Height: 263
+  - Class: Scans Merger
+    Name: Scans Merger
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Line Style:
+        Line Width: 0.0299999993
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: -1
+      Plane: XY
+      Plane Cell Count: 20
+      Reference Frame: map
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/LaserScan
+      Color: 255; 255; 255
+      Color Transformer: FlatColor
+      Decay Time: 0
+      Enabled: false
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: Front Scan
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: false
+      Size (Pixels): 3
+      Size (m): 0.00999999978
+      Style: Points
+      Topic: /front_scan
+      Unreliable: true
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/LaserScan
+      Color: 255; 0; 0
+      Color Transformer: FlatColor
+      Decay Time: 0
+      Enabled: false
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: Rear Scan
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: false
+      Size (Pixels): 3
+      Size (m): 0.00999999978
+      Style: Points
+      Topic: /rear_scan
+      Unreliable: true
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/LaserScan
+      Color: 255; 255; 0
+      Color Transformer: FlatColor
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: Merged Scan
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: false
+      Size (Pixels): 5
+      Size (m): 0.00999999978
+      Style: Points
+      Topic: /scan
+      Unreliable: true
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Circles color: 170; 0; 0
+      Class: Obstacles
+      Enabled: true
+      Margin color: 0; 170; 0
+      Name: Obstacles
+      Opacity: 0.75
+      Segments color: 170; 170; 0
+      Segments thickness: 0.0299999993
+      Topic: /obstacles
+      Unreliable: true
+      Value: true
+    - Class: Path
+      Color: 0; 170; 255
+      Enabled: true
+      History Length: 500
+      Name: RobotPath
+      Topic: /robot_state
+      Unreliable: true
+      Value: true
+    - Class: Path
+      Color: 255; 0; 0
+      Enabled: true
+      History Length: 500
+      Name: ReferencePath
+      Topic: /reference_state
+      Unreliable: true
+      Value: true
+    - Alpha: 0.699999988
+      Class: rviz/Map
+      Color Scheme: map
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic: /map
+      Unreliable: false
+      Use Timestamp: false
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /mapper/edges
+      Name: Edges
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /mapper/vertices
+      Name: Vertices
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Alpha: 1
+      Arrow Length: 0.300000012
+      Axes Length: 0.300000012
+      Axes Radius: 0.00999999978
+      Class: rviz/PoseArray
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.0700000003
+      Head Radius: 0.0299999993
+      Name: PoseArray
+      Shaft Length: 0.230000004
+      Shaft Radius: 0.00999999978
+      Shape: Arrow (Flat)
+      Topic: /particlecloud
+      Unreliable: false
+      Value: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        front_scanner:
+          Value: true
+        map:
+          Value: true
+        odom:
+          Value: true
+        rear_scanner:
+          Value: true
+        robot:
+          Value: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        map:
+          odom:
+            robot:
+              front_scanner:
+                {}
+              rear_scanner:
+                {}
+      Update Interval: 0
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: map
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/MoveCamera
+    - Class: rviz/FocusCamera
+    - Class: rviz/Measure
+  Value: true
+  Views:
+    Current:
+      Angle: 0
+      Class: rviz/TopDownOrtho
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.0599999987
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Name: Current View
+      Near Clip Distance: 0.00999999978
+      Scale: 34.6062012
+      Target Frame: map
+      Value: TopDownOrtho (rviz)
+      X: -0.917439938
+      Y: 0.563340425
+    Saved:
+      - Angle: 0
+        Class: rviz/TopDownOrtho
+        Enable Stereo Rendering:
+          Stereo Eye Separation: 0.0599999987
+          Stereo Focal Distance: 1
+          Swap Stereo Eyes: false
+          Value: false
+        Name: TopDownOrtho
+        Near Clip Distance: 0.00999999978
+        Scale: 83.6650009
+        Target Frame: map
+        Value: TopDownOrtho (rviz)
+        X: 0
+        Y: 0
+Window Geometry:
+  Data Recorder:
+    collapsed: false
+  Displays:
+    collapsed: false
+  Feedback Controller:
+    collapsed: false
+  Height: 744
+  Hide Left Dock: false
+  Hide Right Dock: false
+  Manual Controller:
+    collapsed: false
+  Obstacle Extractor:
+    collapsed: false
+  Obstacle Publisher:
+    collapsed: false
+  Obstacle Tracker:
+    collapsed: false
+  Potentials Controller:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd0000000400000000000001c5000002cafc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006400fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afc00000000000002ca000001ad0100001dfa000000000100000005fb00000018005300630061006e00730020004d006500720067006500720100000000ffffffff0000011900fffffffb0000001e0053007400610074006500200045007300740069006d00610074006f00720000000000ffffffff000000a700fffffffb00000022004f00620073007400610063006c00650020005200650063006f00720064006500720000000000ffffffff0000000000000000fb0000001a00440061007400610020005200650063006f00720064006500720000000000ffffffff0000019d00fffffffb00000026005200650066006500720065006e00630065002000470065006e0065007200610074006f00720100000000000001c50000016e00fffffffc0000017f000002010000000000fffffffaffffffff0100000004fb00000018005300630061006e00730020004d006500720067006500720000000000ffffffff0000011900fffffffb00000024004f00620073007400610063006c006500200045007800740072006100630074006f00720000000000ffffffff0000012f00fffffffb00000020004f00620073007400610063006c006500200054007200610063006b006500720000000000ffffffff0000013b00fffffffb00000024004f00620073007400610063006c00650020005000750062006c006900730068006500720000000000ffffffff0000016600fffffffb00000022004f00620073007400610063006c00650020004400650074006500630074006f00720000000206000002b80000000000000000fb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000001200530069006d0075006c00610074006f0072000000032f000000d3000000e100ffffff00000001000001c3000002cafc0200000006fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fc0000000000000166000000fb0100001dfa000000000100000002fb000000100044006900730070006c0061007900730100000000ffffffff0000016a00fffffffb0000000a00560069006500770073010000057c000001c30000010f00fffffffc0000016c0000015e000001360100001dfa000000000100000006fb00000022004d0061006e00750061006c00200043006f006e00740072006f006c006c006500720100000000ffffffff0000017600fffffffb0000002a0050006f00740065006e007400690061006c007300200043006f006e00740072006f006c006c006500720100000000ffffffff000001b500fffffffb000000260046006500650064006200610063006b00200043006f006e00740072006f006c006c006500720100000000ffffffff000001b500fffffffb00000024005500720061006b00750062006f00200043006f006e00740072006f006c006c006500720000000000ffffffff0000000000000000fb00000020004f00620073007400610063006c0065002000410076006f00690064006500720000000000ffffffff0000000000000000fb00000020004f00620073007400610063006c0065002000410076006f00690064006500720000000000ffffffff0000000000000000fb0000002e004f00620073007400610063006c00650020004400650074006500630074006f0072002000500061006e0065006c0000000155000001520000000000000000fb00000034005600690072007400750061006c0020004f00620073007400610063006c00650020005000750062006c00690073006800650072000000012f000001520000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073f0000003efc0100000002fb0000000800540069006d006500000000000000073f0000030000fffffffb0000000800540069006d0065010000000000000450000000000000000000000181000002ca00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730000000000ffffffff0000000000000000
+  Reference Generator:
+    collapsed: false
+  Scans Merger:
+    collapsed: false
+  Selection:
+    collapsed: false
+  Simulator:
+    collapsed: false
+  State Estimator:
+    collapsed: false
+  Time:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1301
+  X: 65
+  Y: 24

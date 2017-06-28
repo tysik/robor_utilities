@@ -22,16 +22,13 @@
   <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_front_scanner" args="0.220509 0 0 0 0 0 $(arg robot_frame) $(arg front_scanner_frame)" machine="yb_pc"/>
   <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_rear_scanner" args="-0.246139 0 0 3.141592 0 0 $(arg robot_frame) $(arg rear_scanner_frame)" machine="yb_pc"/>
 
-
   <group if="$(arg simulator)">
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)" machine="yb_pc"/>
   </group>
 
-
   <group if="$(arg use_only_odometry)">
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)" machine="yb_pc"/>
   </group>
-
 
   <group if="$(arg use_optitrack)">
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)" machine="yb_pc"/>
@@ -43,7 +40,6 @@
       <param name="optitrack_config/multicast_address" value="239.255.42.99"/>
     </node>
   </group>
-
  
   <group if="$(arg use_map)">
     <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/odometry_map/map.yaml" machine="usr_pc"/>
@@ -66,7 +62,6 @@
     </node>
   </group>
 
-  
   <group if="$(arg do_mapping)">
     <param name="robot_id" value="1"/>
     <param name="scan_input_topic" value="karto_in"/>

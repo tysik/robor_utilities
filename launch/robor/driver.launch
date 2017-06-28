@@ -18,8 +18,7 @@
   <arg name="front_scanner_frame"/>
   <arg name="rear_scanner_frame"/>
 
-  <!--<node pkg="youbot_base_driver" type="youbot_base_driver_node" name="youbot_base_driver" machine="yb_pc">-->
-  <node pkg="nodelet" type="nodelet" name="youbot_base_driver" args="load youbot_base_driver/YoubotBaseDriver $(arg manager)" machine="yb_pc">
+  <node pkg="youbot_base_driver" type="youbot_base_driver_node" name="youbot_base_driver" machine="yb_pc">
     <param name="publish_tf"       value="false"   if="$(arg use_optitrack)"/>
 
     <param name="loop_rate"        value="$(arg loop_rate)"/>
