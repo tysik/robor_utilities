@@ -20,7 +20,6 @@
   <arg name="UAM_scanner_frame"/>
 
   <group unless="$(arg simulator)">
-    <!--
     <node pkg="nodelet" type="nodelet" name="scans_merger" args="load obstacle_detector/ScansMerger $(arg manager)" machine="yb_pc">
       <param name="active"            value="true"/>
       <param name="publish_scan"      value="true"/>
@@ -39,6 +38,7 @@
       <param name="frame_id"          value="$(arg robot_frame)"/>
     </node>
 
+    <!--
     <node pkg="nodelet" type="nodelet" name="scan_rectifier" args="load obstacle_detector/ScanRectifier $(arg manager)" machine="yb_pc">
       <param name="active"            value="true"/>
       <param name="scan_rate"         value="10.0"/>
@@ -54,7 +54,7 @@
       <param name="active"               value="false"/>
       <param name="use_scan"             value="true"/>
       <param name="use_pcl"              value="false"/>
-
+    <!--
       <param name="use_split_and_merge"  value="false"/>
       <param name="discard_converted_segments" value="true"/>
       <param name="transform_coordinates"      value="true"/>

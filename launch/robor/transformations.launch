@@ -20,11 +20,10 @@
   <arg name="UAM_scanner_frame"/>
   
   <!-- Static tfs -->
-  <!--
   <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_front_scanner" args="0.220509 0 0 0 0 0 $(arg robot_frame) $(arg front_scanner_frame)" machine="yb_pc"/>
   <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_rear_scanner" args="-0.246139 0 0 3.141592 0 0 $(arg robot_frame) $(arg rear_scanner_frame)" machine="yb_pc"/>
-  -->
-  <node pkg="tf" type="static_transform_publisher" name="robot_to_UAM_scanner" args="0.195 0 0 0 0 0 $(arg robot_frame) $(arg UAM_scanner_frame) 10" machine="yb_pc"/>
+
+  <!--<node pkg="tf" type="static_transform_publisher" name="robot_to_UAM_scanner" args="0.195 0 0 0 0 0 $(arg robot_frame) $(arg UAM_scanner_frame) 10" machine="yb_pc"/>-->
 
   <group if="$(arg simulator)">
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)" machine="yb_pc"/>
@@ -73,7 +72,7 @@
     <param name="laser_topic" value="scan"/>
     <param name="map_topic" value="map"/>
 
-    <param name="laser_frame" value="$(arg UAM_scanner_frame)"/>
+    <param name="laser_frame" value="$(arg front_scanner_frame)"/>
     <param name="robot_frame" value="$(arg robot_frame)"/>
     <param name="odometry_frame" value="$(arg odom_frame)"/>
     <param name="offset_frame" value="offset"/>
