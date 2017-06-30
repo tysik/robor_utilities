@@ -17,7 +17,48 @@
 
   <arg name="front_scanner_frame"/>
   <arg name="rear_scanner_frame"/>
+  <arg name="UAM_scanner_frame"/>
 
+  <!--
+  Set manually a static ip for hokuyo with ethernet
+  IP Address 192.168.0.15
+  Subnet Mask 255.255.255.0 (24)
+  Default Gateway 192.168.0.1
+  -->
+  <node pkg="urg_node" type="urg_node" name="new_scanner" machine="yb_pc" respawn="true">
+    <param name="ip_address" value="192.168.0.10"/>
+    <param name="ip_port" value="10940"/>
+
+    <param name="calibrate_time" value="false"/>
+    <param name="time_offset"    value="0.0"/>
+
+    <param name="publish_intensity" value="false"/>
+    <param name="publish_multiecho" value="false"/>
+
+    <!--
+    <param name="error_limit" value="4"/>
+    <param name="diagnostics_tolerance" value="0.05"/>
+    <param name="diagnostics_window_time" value="5.0"/>
+    <param name="get_detailed_status" value="false"/>
+    -->
+
+    <!-- 180 deg -->
+    <param name="angle_min" value="-1.5707963"/>
+    <param name="angle_max" value="1.5707963"/>
+
+    <!-- 270 deg -->
+    <!--
+    <param name="angle_min" value="-2.356194488"/>
+    <param name="angle_max" value="2.356194488"/>
+    -->
+
+    <param name="cluster"   value="1"/>
+    <param name="skip"      value="0"/>
+
+    <param name="frame_id"  value="$(arg UAM_scanner_frame)"/>
+  </node>
+
+  <!--
   <node pkg="urg_node" type="urg_node" name="front_hokuyo" machine="yb_pc" respawn="true">
     <param name="serial_port"    value="/dev/sensors/hokuyo_H1320250"/>
     <param name="serial_baud"    value="115200"/>
@@ -60,37 +101,6 @@
     <remap from="scan" to="rear_scan"/>
   </node>
 
-  <!--
-  Set manually a static ip for hokuyo with ethernet
-  IP Address 192.168.0.15
-  Subnet Mask 255.255.255.0
-  Default Gateway 192.168.0.1
-
-  <node pkg="urg_node" type="urg_node" name="new_scanner" output="screen">
-    <param name="ip_address" value="192.168.0.15"/>
-    <param name="ip_port" value="10940"/>
-
-    <param name="serial_port" value="/dev/ttyACM0"/>
-    <param name="serial_baud" value="115200"/>
-
-    <param name="calibrate_time" value="true"/>
-
-    <param name="publish_intensity" value="false"/>
-    <param name="publish_multiecho" value="false"/>
-
-    <param name="error_limit" value="4"/>
-    <param name="diagnostics_tolerance" value="0.05"/>
-    <param name="diagnostics_window_time" value="5.0"/>
-    <param name="get_detailed_status" value="false"/>
-
-    <param name="angle_min" value="-1.5707963"/>
-    <param name="angle_max" value="1.5707963"/>
-
-    <param name="frame_id" value="$(arg front_scanner_frame)"/>
-  </node>
-  -->
-
-  <!--
   <node name="ueye" type="camera" pkg="ueye" output="screen" machine="yb_pc"/>
 
   <node name="image_view" type="image_view" pkg="image_view" machine="usr_pc">

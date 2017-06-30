@@ -17,6 +17,7 @@
 
   <arg name="front_scanner_frame"/>
   <arg name="rear_scanner_frame"/>
+  <arg name="UAM_scanner_frame"/>
   
   <node pkg="nodelet" type="nodelet" name="manual_controller" args="load robor_controllers/ManualController $(arg manager)" machine="yb_pc">
     <param name="active"        value="true"/>

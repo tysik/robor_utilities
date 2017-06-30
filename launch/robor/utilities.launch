@@ -17,6 +17,7 @@
 
   <arg name="front_scanner_frame"/>
   <arg name="rear_scanner_frame"/>
+  <arg name="UAM_scanner_frame"/>
 
   <group if="$(arg simulator)">
     <node pkg="nodelet" type="nodelet" name="simulator" args="load robor_utilities/Simulator $(arg manager)" machine="usr_pc">

@@ -18,6 +18,7 @@
 
   <arg name="front_scanner_frame" value="front_scanner"/>
   <arg name="rear_scanner_frame"  value="rear_scanner"/>
+  <arg name="UAM_scanner_frame"   value="UAM_scanner"/>
   
   <!-- Machines -->
   <group if="$(arg simulator)">
