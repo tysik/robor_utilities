@@ -59,7 +59,7 @@
  
 
   <group if="$(arg use_map)">
-    <node name="map_server" pkg="map_server" type="map_server" args="/home/youbot/robor_ws/src/robor_utilities/resources/maps/odometry_map/map424.yaml" machine="yb_pc"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/odometry_map/map424.yaml" machine="usr_pc"/>
 
     <node pkg="amcl" type="amcl" name="amcl" machine="yb_pc" output="screen">
       <param name="global_frame_id" value="$(arg map_frame)"/>

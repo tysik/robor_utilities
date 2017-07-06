@@ -22,9 +22,10 @@
 
   <group unless="$(arg simulator)">
 
-    <node pkg="nodelet" type="nodelet" name="obstacles_nm" args="manager" machine="yb_pc"/>
+    <!--<node pkg="nodelet" type="nodelet" name="obstacles_nm" args="manager" machine="yb_pc"/>-->
 
-    <node pkg="nodelet" type="nodelet" name="scans_merger" args="load obstacle_detector/ScansMerger obstacles_nm" machine="yb_pc">
+    <!--<node pkg="nodelet" type="nodelet" name="scans_merger" args="load obstacle_detector/ScansMerger obstacles_nm" machine="yb_pc">-->
+    <node pkg="obstacle_detector" type="scans_merger_node" name="scans_merger" machine="yb_pc">
       <param name="active"            value="true"/>
       <param name="publish_scan"      value="true"/>
       <param name="publish_pcl"       value="false"/>
@@ -54,7 +55,8 @@
     </node>
     -->
 
-    <node pkg="nodelet" type="nodelet" name="obstacle_extractor" args="load obstacle_detector/ObstacleExtractor obstacles_nm" machine="yb_pc">
+    <!--<node pkg="nodelet" type="nodelet" name="obstacle_extractor" args="load obstacle_detector/ObstacleExtractor obstacles_nm" machine="yb_pc">-->
+    <node pkg="obstacle_detector" type="obstacle_extractor_node" name="obstacle_extractor" machine="yb_pc">
       <param name="active"               value="false"/>
       <param name="use_scan"             value="true"/>
       <param name="use_pcl"              value="false"/>
@@ -75,7 +77,8 @@
       <param name="frame_id"             value="$(arg map_frame)"/>
     </node>
 
-    <node pkg="nodelet" type="nodelet" name="obstacle_tracker" args="load obstacle_detector/ObstacleTracker obstacles_nm" machine="yb_pc">
+    <!--<node pkg="nodelet" type="nodelet" name="obstacle_tracker" args="load obstacle_detector/ObstacleTracker obstacles_nm" machine="yb_pc">-->
+    <node pkg="obstacle_detector" type="obstacle_tracker_node" name="obstacle_tracker" machine="yb_pc">
       <param name="active"                  value="false"/>
 
       <param name="loop_rate"               value="$(arg loop_rate)"/>
