@@ -20,9 +20,8 @@
   <arg name="UAM_scanner_frame"/>
   
   <!-- Static tfs -->
-  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_front_scanner" args="0.220509 0 0 0 0 0 $(arg robot_frame) $(arg front_scanner_frame)" machine="yb_pc"/>
-  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_rear_scanner" args="-0.246139 0 0 3.141592 0 0 $(arg robot_frame) $(arg rear_scanner_frame)" machine="yb_pc"/>
-
+  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_front_scanner" args="0.223 0 0 0 0 0 $(arg robot_frame) $(arg front_scanner_frame)" machine="yb_pc"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_rear_scanner" args="-0.246 0 0 3.141592 0 0 $(arg robot_frame) $(arg rear_scanner_frame)" machine="yb_pc"/>
   <!--<node pkg="tf" type="static_transform_publisher" name="robot_to_UAM_scanner" args="0.195 0 0 0 0 0 $(arg robot_frame) $(arg UAM_scanner_frame) 10" machine="yb_pc"/>-->
 
   <group if="$(arg simulator)">

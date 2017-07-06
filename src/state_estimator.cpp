@@ -83,20 +83,20 @@ bool StateEstimator::updateParams(std_srvs::Empty::Request &req, std_srvs::Empty
     }
   }
 
-  try {
-    tf::StampedTransform transform;
-    ros::Time now = ros::Time::now();
-    tf_ls_.waitForTransform(p_parent_frame_id_, p_child_frame_id_, now, ros::Duration(10.0));
-    tf_ls_.lookupTransform(p_parent_frame_id_, p_child_frame_id_, now, transform);
+//  try {
+//    tf::StampedTransform transform;
+//    ros::Time now = ros::Time::now();
+//    tf_ls_.waitForTransform(p_parent_frame_id_, p_child_frame_id_, now, ros::Duration(10.0));
+//    tf_ls_.lookupTransform(p_parent_frame_id_, p_child_frame_id_, now, transform);
 
-    pose_.x = transform.getOrigin().getX();
-    pose_.y = transform.getOrigin().getY();
-    pose_.theta = tf::getYaw(transform.getRotation());
-  }
-  catch (tf::TransformException ex) {
-    ROS_WARN_STREAM(ex.what());
-    return false;
-  }
+//    pose_.x = transform.getOrigin().getX();
+//    pose_.y = transform.getOrigin().getY();
+//    pose_.theta = tf::getYaw(transform.getRotation());
+//  }
+//  catch (tf::TransformException ex) {
+//    ROS_WARN_STREAM(ex.what());
+//    return false;
+//  }
 
   // Initialize angular KF
   angular_kf_.A << 1.0 << p_sampling_time_ << endr

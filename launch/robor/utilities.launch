@@ -42,7 +42,8 @@
   </group>
 
   <group unless="$(arg simulator)">
-    <node pkg="nodelet" type="nodelet" name="state_estimator" args="load robor_utilities/StateEstimator $(arg manager)" machine="yb_pc" unless="$(arg use_only_odometry)">
+    <!--<node pkg="nodelet" type="nodelet" name="state_estimator" args="load robor_utilities/StateEstimator $(arg manager)" machine="yb_pc" unless="$(arg use_only_odometry)">-->
+    <node pkg="robor_utilities" type="state_estimator_node" name="state_estimator" machine="yb_pc" unless="$(arg use_only_odometry)">
       <param name="active"           value="true"/>
 
       <param name="loop_rate"        value="$(arg loop_rate)"/>
