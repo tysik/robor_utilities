@@ -1,6 +1,6 @@
-image: map424.png
+image: map424.pgm
 resolution: 0.050000
-origin: [-14.152765, -13.616973, 0]
+origin: [-14.152765, -13.616973, 0.0]
 negate: 0
 occupied_thresh: 0.65
 free_thresh: 0.196

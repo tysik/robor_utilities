@@ -31,9 +31,8 @@
     <machine name="yb_pc"  user="youbot"      address="yb_pc" env-loader="/home/youbot/robor_ws/src/robor_utilities/scripts/youbot_env.sh"/>
   </group>
 
-  <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" machine="yb_pc">
-    <param name="num_worker_threads" value="15"/>
-  </node>
+  <!-- Nodelet Manager -->
+  <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" machine="yb_pc"/>
   
   <include file="$(find robor_utilities)/launch/robor/driver.launch"          pass_all_args="true" unless="$(arg simulator)"/>
   <include file="$(find robor_utilities)/launch/robor/sensors.launch"         pass_all_args="true" unless="$(arg simulator)"/>

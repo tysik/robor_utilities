@@ -46,6 +46,7 @@
     </node>
 
     <node pkg="nodelet" type="nodelet" name="optitrack_drift" args="load robor_utilities/OptitrackDrift $(arg manager)" machine="yb_pc">
+    <!--<node pkg="robor_utilities" type="optitrack_drift_node" name="optitrack_drift" machine="yb_pc">-->
       <param name="active"             value="true"/>
       <param name="loop_rate"          value="$(arg loop_rate)"/>
 
@@ -58,7 +59,7 @@
  
 
   <group if="$(arg use_map)">
-    <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/odometry_map/map_wobit.yaml" machine="usr_pc"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="/home/youbot/robor_ws/src/robor_utilities/resources/maps/odometry_map/map424.yaml" machine="yb_pc"/>
 
     <node pkg="amcl" type="amcl" name="amcl" machine="yb_pc" output="screen">
       <param name="global_frame_id" value="$(arg map_frame)"/>
@@ -86,7 +87,7 @@
     <param name="laser_topic" value="scan"/>
     <param name="map_topic" value="map"/>
 
-    <param name="laser_frame" value="$(arg front_scanner_frame)"/>
+    <param name="laser_frame" value="$(arg robot_frame)"/>
     <param name="robot_frame" value="$(arg robot_frame)"/>
     <param name="odometry_frame" value="$(arg odom_frame)"/>
     <param name="offset_frame" value="offset"/>
@@ -94,7 +95,7 @@
 
     <param name="map_service" value="static_map"/>
 
-    <node name="mapper" pkg="nav2d_karto" type="mapper" machine="usr_pc">
+    <node name="mapper" pkg="nav2d_karto" type="mapper" machine="yb_pc">
       <param name="grid_resolution" value="0.05"/>
       <param name="range_threshold" value="40.0"/>
       <param name="map_update_rate" value="1"/>
@@ -105,6 +106,7 @@
       <rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
 
       <!--<remap from="scan" to="front_scan"/>-->
+      <remap from="odom" to="robot_state"/>
     </node>
   </group>
   
