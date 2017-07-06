@@ -37,13 +37,10 @@
       <param name="frame_id"          value="$(arg robot_frame)"/>
     </node>
 
-    <!--<node pkg="obstacle_detector" type="scan_rectifier_node" name="scan_rectifier" machine="yb_pc">-->
     <node pkg="nodelet" type="nodelet" name="scan_rectifier" args="load obstacle_detector/ScanRectifier $(arg manager)" machine="yb_pc">
       <param name="active"            value="true"/>
       <param name="scan_rate"         value="10.0"/>
       <param name="odom_rate"         value="100.0"/>
-
-      <param name="frame_id"          value="$(arg robot_frame)"/>
 
       <remap from="odom" to="robot_state"/>
     </node>

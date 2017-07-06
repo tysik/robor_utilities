@@ -28,9 +28,13 @@ for the other.
 
 To make life easier, add following aliases to .bashrc file:
 
-alias rbr_connect='ssh youbot@yb_pc'
 alias rbr_simulator='roslaunch robor_utilities robor.launch simulator:=true'
-alias rbr_start='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh'
+alias rbr_odometry='roslaunch robor_utilities robor.launch simulator:=true'
+alias rbr_optitrack='roslaunch robor_utilities robor.launch simulator:=true'
+alias rbr_optitrack='roslaunch robor_utilities robor.launch simulator:=true'
+alias rbr_optitrack='roslaunch robor_utilities robor.launch simulator:=true'
+
+alias rbr_connect='ssh youbot@yb_pc'
 alias rbr_shutdown='ssh -t youbot@yb_pc "sudo shutdown -h now"'
 
 ### Date and time synchronization between two machines

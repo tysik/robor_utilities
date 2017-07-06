@@ -8,9 +8,9 @@
   <arg name="simulator"         default="false"   doc="If set to true, the following 4 conditions must be set to false"/>
 
   <arg name="use_only_odometry" value="false"     doc="Disable state estimator and treat odometry as ground truth"/>
-  <arg name="use_optitrack"     value="true"     doc="Use optitrack for position measurement and odometry for state estimation"/>
+  <arg name="use_optitrack"     value="false"     doc="Use optitrack for position measurement and odometry for state estimation"/>
   <arg name="use_map"           value="false"     doc="Use amcl for position measurement and odometry for state estimation"/>
-  <arg name="do_mapping"        value="false"     doc="Use karto for position measurement (while mapping) and odometry for state estimation"/>
+  <arg name="do_mapping"        value="true"     doc="Use karto for position measurement (while mapping) and odometry for state estimation"/>
 
   <arg name="map_frame"         value="map"       doc="Name of the frame affixed to the origin of map"/>
   <arg name="odom_frame"        value="odom"      doc="Name of the movable frame slowly drifting as the odometry diverges"/>
@@ -28,7 +28,7 @@
 
   <!-- Nodelet manager -->
   <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" machine="yb_pc" output="screen">
-    <param name="num_worker_threads" value="24"/>
+    <param name="num_worker_threads" value="30"/>
   </node>
   
   <include file="$(find robor_utilities)/launch/robor/driver.launch"          pass_all_args="true" unless="$(arg simulator)"/>
