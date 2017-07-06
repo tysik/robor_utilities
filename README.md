@@ -18,23 +18,25 @@ In your /etc/hosts add:
 In youbot /etc/hosts add:
 `<your_ip_in_roksis_network> yb_<your_username>`
 
-Configure ssh keys between both machines. When you ssh into youbot for the first time, use "ssh -oHostKeyAlgorithms='ssh-rsa' youbot@yb_pc". Otherwise you will fall into strange issues. Use:
-`ssh-copy-id youbot@yb_pc`
-in one direction, the 
-`ssh-copy-id <your_username>@yb_<your_username>`
+Configure ssh keys between both machines. When you ssh into youbot for the first time, use "ssh -oHostKeyAlgorithms='ssh-rsa' youbot@yb_pc". Otherwise you will fall into strange issues. Use:  
+`ssh-copy-id youbot@yb_pc`  
+in one direction, the  
+`ssh-copy-id <your_username>@yb_<your_username>`  
 for the other.
 
 ### Aliases
 
-To make life easier, add following aliases to .bashrc file:
+To make life easier, add following aliases to .bashrc file:  
 
-alias rbr_simulator='roslaunch robor_utilities robor.launch simulator:=true'
-alias rbr_odometry='roslaunch robor_utilities robor.launch simulator:=true'
-alias rbr_optitrack='roslaunch robor_utilities robor.launch simulator:=true'
-alias rbr_optitrack='roslaunch robor_utilities robor.launch simulator:=true'
-alias rbr_optitrack='roslaunch robor_utilities robor.launch simulator:=true'
+alias rbr_start='rbr_odometry'
+alias rbr_simulator='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh simulator'
+alias rbr_odometry='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh use_only_odometry'
+alias rbr_optitrack='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh use_optitrack'
+alias rbr_amcl='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh use_map'
+alias rbr_mapping='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh do_mapping'
 
 alias rbr_connect='ssh youbot@yb_pc'
+alias rbr_env='source $HOME/robor_ws/src/robor_utilities/scripts/user_env.sh'
 alias rbr_shutdown='ssh -t youbot@yb_pc "sudo shutdown -h now"'
 
 ### Date and time synchronization between two machines

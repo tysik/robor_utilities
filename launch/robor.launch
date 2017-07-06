@@ -6,11 +6,10 @@
   <arg name="loop_rate"         value="100.0"/>
   
   <arg name="simulator"         default="false"   doc="If set to true, the following 4 conditions must be set to false"/>
-
-  <arg name="use_only_odometry" value="false"     doc="Disable state estimator and treat odometry as ground truth"/>
-  <arg name="use_optitrack"     value="false"     doc="Use optitrack for position measurement and odometry for state estimation"/>
-  <arg name="use_map"           value="false"     doc="Use amcl for position measurement and odometry for state estimation"/>
-  <arg name="do_mapping"        value="true"     doc="Use karto for position measurement (while mapping) and odometry for state estimation"/>
+  <arg name="use_only_odometry" default="false"   doc="Disable state estimator and treat odometry as ground truth"/>
+  <arg name="use_optitrack"     default="false"   doc="Use optitrack for position measurement and odometry for state estimation"/>
+  <arg name="use_map"           default="false"   doc="Use amcl for position measurement and odometry for state estimation"/>
+  <arg name="do_mapping"        default="false"   doc="Use karto for position measurement (while mapping) and odometry for state estimation"/>
 
   <arg name="map_frame"         value="map"       doc="Name of the frame affixed to the origin of map"/>
   <arg name="odom_frame"        value="odom"      doc="Name of the movable frame slowly drifting as the odometry diverges"/>
@@ -19,16 +18,21 @@
 
   <arg name="front_scanner_frame" value="front_scanner"/>
   <arg name="rear_scanner_frame"  value="rear_scanner"/>
+  <arg name="UAM_scanner_frame"   value="UAM_scanner"/>
   
   <!-- Machines -->
-  <machine name="usr_pc" user="$(env USER)" address="localhost" if="$(arg simulator)"/>
-  <machine name="usr_pc" user="$(env USER)" address="yb_$(env USER)" env-loader="$(find robor_utilities)/scripts/user_env.sh" unless="$(arg simulator)"/>
-  <machine name="yb_pc"  user="$(env USER)" address="localhost" if="$(arg simulator)"/>
-  <machine name="yb_pc"  user="youbot"      address="yb_pc" env-loader="/home/youbot/robor_ws/src/robor_utilities/scripts/youbot_env.sh" unless="$(arg simulator)"/>
+  <group if="$(arg simulator)">
+    <machine name="usr_pc" user="$(env USER)" address="localhost"/>
+    <machine name="yb_pc"  user="$(env USER)" address="localhost"/>
+  </group>
+  <group unless="$(arg simulator)">
+    <machine name="usr_pc" user="$(env USER)" address="yb_$(env USER)" env-loader="$(find robor_utilities)/scripts/user_env.sh"/>
+    <machine name="yb_pc"  user="youbot"      address="yb_pc" env-loader="/home/youbot/robor_ws/src/robor_utilities/scripts/youbot_env.sh"/>
+  </group>
 
   <!-- Nodelet manager -->
-  <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" machine="yb_pc" output="screen">
-    <param name="num_worker_threads" value="30"/>
+  <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" machine="yb_pc">
+    <param name="num_worker_threads" value="25"/>
   </node>
   
   <include file="$(find robor_utilities)/launch/robor/driver.launch"          pass_all_args="true" unless="$(arg simulator)"/>

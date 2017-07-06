@@ -17,6 +17,7 @@
 
   <arg name="front_scanner_frame"/>
   <arg name="rear_scanner_frame"/>
+  <arg name="UAM_scanner_frame"/>
 
   <group unless="$(arg simulator)">
     <node pkg="nodelet" type="nodelet" name="scans_merger" args="load obstacle_detector/ScansMerger $(arg manager)" machine="yb_pc">
@@ -37,6 +38,7 @@
       <param name="frame_id"          value="$(arg robot_frame)"/>
     </node>
 
+    <!--
     <node pkg="nodelet" type="nodelet" name="scan_rectifier" args="load obstacle_detector/ScanRectifier $(arg manager)" machine="yb_pc">
       <param name="active"            value="true"/>
       <param name="scan_rate"         value="10.0"/>
@@ -44,6 +46,7 @@
 
       <remap from="odom" to="robot_state"/>
     </node>
+    -->
 
     <node pkg="nodelet" type="nodelet" name="obstacle_extractor" args="load obstacle_detector/ObstacleExtractor $(arg manager)" machine="yb_pc">
       <param name="active"               value="false"/>

@@ -17,6 +17,7 @@
 
   <arg name="front_scanner_frame"/>
   <arg name="rear_scanner_frame"/>
+  <arg name="UAM_scanner_frame"/>
   
   <node pkg="nodelet" type="nodelet" name="manual_controller" args="load robor_controllers/ManualController $(arg manager)" machine="yb_pc">
     <param name="active"        value="true"/>
@@ -51,7 +52,7 @@
     <param name="max_v"        value="0.5"/>
     <param name="max_w"        value="3.0"/>
   </node>
-<!--
+
   <node pkg="nodelet" type="nodelet" name="urakubo_controller" args="load robor_controllers/UrakuboController $(arg manager)" machine="yb_pc">
     <param name="active"       value="false"/>
     <param name="run"          value="false"/>
@@ -78,7 +79,7 @@
     <param name="max_v"        value="0.4"/>
     <param name="max_w"        value="2.7"/>
   </node>
--->
+
   <node pkg="nodelet" type="nodelet" name="potentials_controller" args="load robor_controllers/PotentialsController $(arg manager)" machine="yb_pc">
     <param name="active"       value="false"/>
     <param name="run"          value="false"/>
