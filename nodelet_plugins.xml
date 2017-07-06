@@ -40,4 +40,12 @@
     </description>
   </class>
 
+  <class name="robor_utilities/OptitrackDrift"
+         type="robor_utilities::OptitrackDriftNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      Optitrack Drift Nodelet
+    </description>
+  </class>
+
 </library>

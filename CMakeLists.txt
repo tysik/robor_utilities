@@ -9,7 +9,7 @@ find_package(Boost 1.54.0 REQUIRED system)
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES state_estimator simulator reference_generator data_recorder youbot_visualizer
+  LIBRARIES state_estimator simulator reference_generator data_recorder youbot_visualizer optitrack_drift
   CATKIN_DEPENDS tf joy rviz roscpp roslaunch nodelet std_srvs nav_msgs sensor_msgs geometry_msgs
 )
 
@@ -38,6 +38,10 @@ add_library(youbot_visualizer src/youbot_visualizer.cpp)
 target_link_libraries(youbot_visualizer ${catkin_LIBRARIES})
 add_dependencies(youbot_visualizer ${catkin_EXPORTED_TARGETS})
 
+add_library(optitrack_drift src/optitrack_drift.cpp)
+target_link_libraries(optitrack_drift ${catkin_LIBRARIES})
+add_dependencies(optitrack_drift ${catkin_EXPORTED_TARGETS})
+
 #
 # Build nodes
 #
@@ -55,6 +59,9 @@ target_link_libraries(data_recorder_node data_recorder)
 
 add_executable(youbot_visualizer_node src/nodes/youbot_visualizer_node.cpp)
 target_link_libraries(youbot_visualizer_node youbot_visualizer)
+
+add_executable(optitrack_drift_node src/nodes/optitrack_drift_node.cpp)
+target_link_libraries(optitrack_drift_node optitrack_drift)
 
 #
 # Build nodelets
@@ -106,7 +113,7 @@ install(TARGETS state_estimator simulator reference_generator data_recorder youb
 #
 # Install nodes
 #
-install(TARGETS state_estimator_node simulator_node reference_generator_node data_recorder_node youbot_visualizer_node
+install(TARGETS state_estimator_node simulator_node reference_generator_node data_recorder_node youbot_visualizer_node optitrack_drift_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #

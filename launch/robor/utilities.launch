@@ -14,6 +14,7 @@
   <arg name="odom_frame"/>
   <arg name="robot_frame"/>
   <arg name="reference_frame"/>
+  <arg name="optitrack_frame"/>
 
   <arg name="front_scanner_frame"/>
   <arg name="rear_scanner_frame"/>
@@ -42,7 +43,7 @@
   </group>
 
   <group unless="$(arg simulator)">
-    <!--<node pkg="nodelet" type="nodelet" name="state_estimator" args="load robor_utilities/StateEstimator $(arg manager)" machine="yb_pc" unless="$(arg use_only_odometry)">-->
+    <!--<node pkg="nodelet" type="nodelet" name="state_estimator" args="load robor_utilities/StateEstimator $(arg manager)" machine="yb_pc" unless="$(arg use_only_odometry)">
     <node pkg="robor_utilities" type="state_estimator_node" name="state_estimator" machine="yb_pc" unless="$(arg use_only_odometry)">
       <param name="active"           value="true"/>
 
@@ -55,13 +56,14 @@
 
       <param name="parent_frame_id"  value="$(arg odom_frame)"/>
       <param name="child_frame_id"   value="$(arg robot_frame)"/>
-    </node>
+    </node>-->
 
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/robor.rviz" machine="usr_pc" required="true" unless="$(arg do_mapping)"/>
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/mapping.rviz" machine="usr_pc" required="true" if="$(arg do_mapping)"/>
   </group>
 
-  <node pkg="nodelet" type="nodelet" name="reference_generator" args="load robor_utilities/ReferenceGenerator $(arg manager)" machine="yb_pc">
+  <!--<node pkg="nodelet" type="nodelet" name="reference_generator" args="load robor_utilities/ReferenceGenerator $(arg manager)" machine="yb_pc">-->
+  <node pkg="robor_utilities" type="reference_generator_node" name="reference_generator" machine="yb_pc">
     <param name="active"                 value="true"/>
     <param name="loop_rate"              value="$(arg loop_rate)"/>
 
@@ -104,13 +106,11 @@
     <param name="frame_id"       value="$(arg robot_frame)"/>
   </node>
 
-  <!--
   <node name="joy" pkg="joy" type="joy_node" machine="usr_pc">
     <param name="dev" type="string" value="/dev/input/js0"/>
     <param name="deadzone"          value="0.08"/>
     <param name="autorepeat_rate"   value="0"/>
   </node>
-  -->
 
 </launch>
 <!-- -->

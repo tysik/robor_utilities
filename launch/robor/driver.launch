@@ -14,13 +14,14 @@
   <arg name="odom_frame"/>
   <arg name="robot_frame"/>
   <arg name="reference_frame"/>
+  <arg name="optitrack_frame"/>
 
   <arg name="front_scanner_frame"/>
   <arg name="rear_scanner_frame"/>
   <arg name="UAM_scanner_frame"/>
 
   <node pkg="youbot_base_driver" type="youbot_base_driver_node" name="youbot_base_driver" machine="yb_pc">
-    <param name="publish_tf"       value="false"   if="$(arg use_optitrack)"/>
+    <param name="publish_tf"       value="true"/>
 
     <param name="loop_rate"        value="$(arg loop_rate)"/>
 
@@ -30,7 +31,7 @@
     <param name="config_file_path" value="/home/youbot/robor_ws/src/youbot_driver/config"/>
     <param name="config_file_name" value="youbot-base"/>
 
-    <remap from="odom" to="robot_state" if="$(arg use_only_odometry)"/>
+    <remap from="odom" to="robot_state"/>
   </node>
 
 </launch>

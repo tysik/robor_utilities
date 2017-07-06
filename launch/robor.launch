@@ -2,8 +2,8 @@
 <launch>
 
   <!-- Configuration -->
-  <arg name="manager"           value="nodelet_manager"/>
-  <arg name="loop_rate"         value="100.0"/>
+  <arg name="manager"           value="main_nm"   doc="Name of the main nodelet manager"/>
+  <arg name="loop_rate"         value="100.0"     doc="The loop rate of nodes in Hz"/>
   
   <arg name="simulator"         default="false"   doc="If set to true, the following 4 conditions must be set to false"/>
   <arg name="use_only_odometry" default="false"   doc="Disable state estimator and treat odometry as ground truth"/>
@@ -13,8 +13,9 @@
 
   <arg name="map_frame"         value="map"       doc="Name of the frame affixed to the origin of map"/>
   <arg name="odom_frame"        value="odom"      doc="Name of the movable frame slowly drifting as the odometry diverges"/>
-  <arg name="robot_frame"       value="robot"     doc="Name of the moving frame affixed to the robot origin"/>
+  <arg name="robot_frame"       value="robot"     doc="Name of the moving frame affixed to the robot base"/>
   <arg name="reference_frame"   value="reference" doc="Name of the frame describing the reference trajectory"/>
+  <arg name="optitrack_frame"   value="optitrack" doc="Name of the frame describing the measurement of optitrack"/>
 
   <arg name="front_scanner_frame" value="front_scanner"/>
   <arg name="rear_scanner_frame"  value="rear_scanner"/>
@@ -30,9 +31,8 @@
     <machine name="yb_pc"  user="youbot"      address="yb_pc" env-loader="/home/youbot/robor_ws/src/robor_utilities/scripts/youbot_env.sh"/>
   </group>
 
-  <!-- Nodelet manager -->
   <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" machine="yb_pc">
-    <param name="num_worker_threads" value="25"/>
+    <param name="num_worker_threads" value="15"/>
   </node>
   
   <include file="$(find robor_utilities)/launch/robor/driver.launch"          pass_all_args="true" unless="$(arg simulator)"/>

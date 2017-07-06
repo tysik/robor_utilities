@@ -14,6 +14,7 @@
   <arg name="odom_frame"/>
   <arg name="robot_frame"/>
   <arg name="reference_frame"/>
+  <arg name="optitrack_frame"/>
 
   <arg name="front_scanner_frame"/>
   <arg name="rear_scanner_frame"/>
