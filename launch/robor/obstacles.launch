@@ -91,7 +91,7 @@
 
   </group>
 
-  <node pkg="obstacle_detector" type="obstacle_publisher" name="obstacle_publisher" machine="yb_pc">
+  <node pkg="obstacle_detector" type="obstacle_publisher_node" name="obstacle_publisher" machine="yb_pc">
     <param name="active"           value="false"/>
     <param name="reset"            value="false"/>
     <param name="fusion_example"   value="false"/>

@@ -41,7 +41,7 @@
 namespace robor_utilities
 {
 
-class OptitrackDrift : public nodelet::Nodelet
+class OptitrackDriftNodelet : public nodelet::Nodelet
 {
 public:
   virtual void onInit() {

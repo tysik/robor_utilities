@@ -71,8 +71,9 @@ add_library(${PROJECT_NAME}_nodelets
   src/nodelets/simulator_nodelet.cpp
   src/nodelets/reference_generator_nodelet.cpp
   src/nodelets/data_recorder_nodelet.cpp
-  src/nodelets/youbot_visualizer_nodelet.cpp)
-target_link_libraries(${PROJECT_NAME}_nodelets state_estimator simulator reference_generator data_recorder youbot_visualizer)
+  src/nodelets/youbot_visualizer_nodelet.cpp
+  src/nodelets/optitrack_drift_nodelet.cpp)
+target_link_libraries(${PROJECT_NAME}_nodelets state_estimator simulator reference_generator data_recorder youbot_visualizer optitrack_drift)
 
 #
 # Build rviz plugins
@@ -105,7 +106,7 @@ add_dependencies(${PROJECT_NAME}_gui ${catkin_EXPORTED_TARGETS})
 #
 # Install libraries
 #
-install(TARGETS state_estimator simulator reference_generator data_recorder youbot_visualizer ${PROJECT_NAME}_nodelets ${PROJECT_NAME}_gui
+install(TARGETS state_estimator simulator reference_generator data_recorder youbot_visualizer optitrack_drift ${PROJECT_NAME}_nodelets ${PROJECT_NAME}_gui
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION})
