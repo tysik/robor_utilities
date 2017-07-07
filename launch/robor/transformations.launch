@@ -62,18 +62,38 @@
     <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/odometry_map/map424.yaml" machine="usr_pc"/>
 
     <node pkg="amcl" type="amcl" name="amcl" machine="yb_pc" output="screen">
+      <param name="tf_broadcast" value="true"/>
+
       <param name="global_frame_id" value="$(arg map_frame)"/>
       <param name="odom_frame_id" value="$(arg odom_frame)"/>
       <param name="base_frame_id" value="$(arg robot_frame)"/>
 
+      <param name="laser_min_range" value="-1.0"/>
+      <param name="laser_max_range" value="-1.0"/>
+      <param name="laser_max_beams" value="30.0"/>
+
       <param name="odom_model_type" value="omni"/>
+      <param name="odom_alpha1" value="0.005"/>
+      <param name="odom_alpha2" value="0.005"/>
+      <param name="odom_alpha3" value="0.010"/>
+      <param name="odom_alpha4" value="0.005"/>
+      <param name="odom_alpha5" value="0.003"/>
+
+      <param name="update_min_d" value="0.01"/>
+      <param name="update_min_a" value="0.5"/>
 
       <param name="initial_pose_x" value="0.0"/>
       <param name="initial_pose_y" value="0.0"/>
       <param name="initial_angle" value="0.0"/>
 
+      <param name="initial_cov_xx" value="0.1"/>
+      <param name="initial_cov_yy" value="0.1"/>
+      <param name="initial_cov_aa" value="0.01"/>
+
       <param name="min_particles" value="500"/>
       <param name="max_particles" value="2000"/>
+
+      <param name="use_map_topic" value="false"/>
 
       <!--<remap from="scan" to="front_scan"/>-->
     </node>
@@ -100,10 +120,16 @@
       <param name="range_threshold" value="40.0"/>
       <param name="map_update_rate" value="1"/>
       <param name="publish_pose_graph" value="true"/>
-      <param name="max_covariance" value="0.05"/>
-      <param name="min_map_size" value="50"/>
+      <param name="max_covariance" value="0.01"/>
+      <param name="transform_publish_period" value="0.1"/>
+      <param name="min_map_size" value="20"/>
 
-      <rosparam file="$(find nav2d_tutorials)/param/mapper.yaml"/>
+      <param name="min_particles" value="2500"/>
+      <param name="max_particles" value="10000"/>
+
+      <param name="MinimumTravelDistance" value="1.0"/>
+      <param name="MinimumTravelHeading" value="0.52"/>
+      <param name="LoopSearchMaximumDistance" value="10.0"/>
 
       <!--<remap from="scan" to="front_scan"/>-->
       <remap from="odom" to="robot_state"/>
