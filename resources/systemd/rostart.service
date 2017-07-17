@@ -1,5 +1,6 @@
 # This service is dedicated to run ROS during
-# the startup of the system
+# the startup of the system.
+# Copy the rostart.sh file to /usr/local/bin/
 
 [Unit]
 Description=Start roscore
@@ -8,7 +9,7 @@ After=network.target network-online.target
 
 [Service]
 Type=simple
-ExecStart=/home/youbot/rostart.sh
+ExecStart=/usr/local/bin/rostart.sh
 #ExecStop=
 Restart=on-failure
 

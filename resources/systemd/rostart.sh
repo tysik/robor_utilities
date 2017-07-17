@@ -7,4 +7,4 @@ export ROS_HOME=/home/youbot/.ros
 . /opt/ros/kinetic/setup.sh
 . /home/youbot/robor_ws/devel/setup.sh
 
-roscore #roslaunch /home/youbot/test.launch
+roslaunch /home/youbot/robor_ws/src/robor_utilities/launch/robor_server.launch

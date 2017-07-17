@@ -1,9 +1,10 @@
-<!-- Main Robor launch file -->
+<!-- Robor client launchfile -->
+<!-- This file is launched when client is ready to work with Robor -->
 <launch>
 
   <arg name="loop_rate"         value="100.0"     doc="The loop rate of nodes in Hz"/>
   
-  <arg name="use_only_odometry" default="false"   doc="Disable state estimator and treat odometry as ground truth"/>
+  <arg name="use_odometry"      default="false"   doc="Disable state estimator and treat odometry as ground truth"/>
   <arg name="use_optitrack"     default="false"   doc="Use optitrack for position measurement and odometry for state estimation"/>
   <arg name="use_map"           default="false"   doc="Use amcl for position measurement and odometry for state estimation"/>
   <arg name="do_mapping"        default="false"   doc="Use karto for position measurement (while mapping) and odometry for state estimation"/>
@@ -41,7 +42,7 @@
   </node>
 
 
-  <group if="$(arg use_only_odometry)">
+  <group if="$(arg use_odometry)">
     <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)" machine="yb_pc"/>
   </group>
 

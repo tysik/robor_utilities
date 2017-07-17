@@ -29,8 +29,8 @@ for the other.
 To make life easier, add following aliases to .bashrc file:  
 
 alias rbr_start='rbr_odometry'
-alias rbr_simulator='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh simulator'
-alias rbr_odometry='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh use_only_odometry'
+alias rbr_simulator='roslaunch robor_utilities robor_simulator.launch'
+alias rbr_odometry='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh use_odometry'
 alias rbr_optitrack='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh use_optitrack'
 alias rbr_amcl='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh use_map'
 alias rbr_mapping='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh do_mapping'

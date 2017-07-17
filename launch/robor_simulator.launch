@@ -1,0 +1,184 @@
+<!-- Main Robor launch file -->
+<launch>
+
+  <arg name="loop_rate"         value="100.0"     doc="The loop rate of nodes in Hz"/>
+  <arg name="map_frame"         value="map"       doc="Name of the frame affixed to the origin of map"/>
+  <arg name="odom_frame"        value="odom"      doc="Name of the movable frame slowly drifting as the odometry diverges"/>
+  <arg name="robot_frame"       value="robot"     doc="Name of the moving frame affixed to the robot base"/>
+  <arg name="reference_frame"   value="reference" doc="Name of the frame describing the reference trajectory"/>
+
+  <!-- Simulator -->
+  <node pkg="robor_utilities" type="simulator_node" name="simulator">
+    <param name="active"           value="true"/>
+    <param name="continuous_angle" value="true"/>
+
+    <param name="loop_rate"        value="$(arg loop_rate)"/>
+    <param name="time_constant"    value="0.0"/>
+    <param name="time_delay"       value="0.0"/>
+
+    <param name="init_x"           value="1.0"/>
+    <param name="init_y"           value="0.7"/>
+    <param name="init_theta"       value="1.2"/>
+
+    <param name="parent_frame_id"     value="$(arg odom_frame)"/>
+    <param name="child_frame_id"      value="$(arg robot_frame)"/>
+
+    <remap from="simulator_state"     to="robot_state"/>
+  </node>
+
+  <!-- Rviz -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/rviz/simulator.rviz"/>
+
+  <!-- Motion Controllers -->
+  <node pkg="robor_controllers" type="manual_controller_node" name="manual_controller">
+    <param name="active"        value="true"/>
+    <param name="publish_ref_vel" value="false"/>
+
+    <param name="use_keys"      value="false"/>
+    <param name="use_joy"       value="true"/>
+
+    <param name="loop_rate"     value="$(arg loop_rate)"/>
+    <param name="time_constant" value="0.1"/>
+
+    <param name="linear_gain"   value="0.3"/>
+    <param name="angular_gain"  value="0.5"/>
+
+    <param name="parent_frame_id" value="$(arg odom_frame)"/>
+    <param name="child_frame_id"  value="$(arg reference_frame)"/>
+  </node>
+
+  <node pkg="robor_controllers" type="feedback_controller_node" name="feedback_controller">
+    <param name="active"       value="false"/>
+    <param name="run"          value="false"/>
+
+    <param name="use_ff"       value="true"/>
+    <param name="loop_rate"    value="$(arg loop_rate)"/>
+
+    <param name="gain_x"       value="0.5"/>
+    <param name="gain_y"       value="0.5"/>
+    <param name="gain_theta"   value="0.5"/>
+
+    <param name="max_u"        value="0.5"/>
+    <param name="max_v"        value="0.5"/>
+    <param name="max_w"        value="3.0"/>
+  </node>
+
+  <node pkg="robor_controllers" type="urakubo_controller_node" name="urakubo_controller">
+    <param name="active"       value="false"/>
+    <param name="run"          value="false"/>
+
+    <param name="normalize_gradient" value="true"/>
+    <param name="loop_rate"     value="$(arg loop_rate)"/>
+
+    <param name="a"            value="0.5"/>
+    <param name="b_"           value="2.5"/>
+    <param name="k_w"          value="0.1"/>
+    <param name="epsilon"      value="0.0001"/>
+    <param name="kappa"        value="3.0"/>
+
+    <param name="min_saddle_gradient"       value="0.05"/>
+    <param name="min_normalizing_potential" value="0.07"/>
+    <param name="min_normalizing_gradient"  value="0.05"/>
+
+    <param name="world_x"      value="0.0"/>
+    <param name="world_y"      value="0.0"/>
+    <param name="world_radius" value="3.0"/>
+
+    <param name="max_u"        value="0.4"/>
+    <param name="max_v"        value="0.4"/>
+    <param name="max_w"        value="2.7"/>
+  </node>
+
+  <node pkg="robor_controllers" type="potentials_controller_node" name="potentials_controller">
+    <param name="active"       value="false"/>
+    <param name="run"          value="false"/>
+    <param name="assisted_control" value="false"/>
+
+    <param name="loop_rate"     value="$(arg loop_rate)"/>
+
+    <param name="R"            value="0.5"/>
+    <param name="eta"          value="1.2"/>
+    <param name="delta"        value="0.2"/>
+    <param name="ko_velocity"  value="0.15"/>
+
+    <param name="gain_pose"    value="0.4"/>
+    <param name="gain_theta"   value="3.0"/>
+
+    <param name="max_u"        value="0.4"/>
+    <param name="max_v"        value="0.4"/>
+    <param name="max_w"        value="3.0"/>
+  </node>
+
+  <!-- Obstacle publisher -->
+  <node pkg="obstacle_detector" type="obstacle_publisher_node" name="obstacle_publisher">
+    <param name="active"           value="false"/>
+    <param name="reset"            value="false"/>
+    <param name="fusion_example"   value="false"/>
+    <param name="fission_example"  value="false"/>
+
+    <param name="loop_rate"        value="$(arg loop_rate)"/>
+    <param name="radius_margin"    value="0.29"/>
+
+    <param name="frame_id"         value="$(arg map_frame)"/>
+
+    <rosparam param="x_vector">[-1.0, 0.0, 1.0]</rosparam>
+    <rosparam param="y_vector">[0.0, -1.0, 0.0]</rosparam>
+    <rosparam param="r_vector">[0.5, 0.5, 0.5]</rosparam>
+    <rosparam param="vx_vector">[0.0, 0.0, 0.0]</rosparam>
+    <rosparam param="vy_vector">[0.0, 0.0, 0.0]</rosparam>
+  </node>
+
+  <!-- Utilities -->
+  <node pkg="robor_utilities" type="reference_generator_node" name="reference_generator">
+    <param name="active"                 value="true"/>
+    <param name="loop_rate"              value="$(arg loop_rate)"/>
+
+    <param name="parent_frame_id"        value="$(arg odom_frame)"/>
+    <param name="child_frame_id"         value="$(arg reference_frame)"/>
+
+    <param name="continuous_angle"       value="false"/>
+    <param name="trajectory_paused"      value="false"/>
+    <param name="trajectory_stopped"     value="false"/>
+
+    <param name="trajectory_type"        value="0"/>
+
+    <param name="initial_x"              value="0.0"/>
+    <param name="initial_y"              value="0.0"/>
+    <param name="initial_theta"          value="0.0"/>
+    <param name="linear_velocity"        value="0.1"/>
+    <param name="harmonic_period"        value="30.0"/>
+    <param name="harmonic_radius_x"      value="1.0"/>
+    <param name="harmonic_radius_y"      value="0.5"/>
+    <param name="harmonic_multiplier_x"  value="1.0"/>
+    <param name="harmonic_multiplier_y"  value="2.0"/>
+  </node>
+
+  <node pkg="robor_utilities" type="data_recorder_node" name="data_recorder">
+    <param name="active"                    value="false"/>
+    <param name="recording"                 value="false"/>
+    <param name="loop_rate"                 value="$(arg loop_rate)"/>
+
+    <param name="record_pose"               value="true"/>
+    <param name="record_reference_pose"     value="true"/>
+    <param name="record_velocity"           value="true"/>
+    <param name="record_reference_velocity" value="true"/>
+    <param name="record_controls"           value="true"/>
+  </node>
+
+  <node pkg="robor_utilities" type="youbot_visualizer_node" name="youbot_visualizer">
+    <param name="active"         value="true"/>
+    <param name="emit_yb_marker" value="true"/>
+    <param name="loop_rate"      value="30.0"/>
+    <param name="frame_id"       value="$(arg robot_frame)"/>
+  </node>
+
+  <node name="joy" pkg="joy" type="joy_node">
+    <param name="dev" type="string" value="/dev/input/js0"/>
+    <param name="deadzone"          value="0.08"/>
+    <param name="autorepeat_rate"   value="0"/>
+  </node>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)"/>
+
+</launch>
+<!-- -->
