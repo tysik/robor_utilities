@@ -1,0 +1,147 @@
+<!-- Main Robor launch file -->
+<launch>
+
+  <arg name="loop_rate"         value="100.0"     doc="The loop rate of nodes in Hz"/>
+  
+  <arg name="use_only_odometry" default="false"   doc="Disable state estimator and treat odometry as ground truth"/>
+  <arg name="use_optitrack"     default="false"   doc="Use optitrack for position measurement and odometry for state estimation"/>
+  <arg name="use_map"           default="false"   doc="Use amcl for position measurement and odometry for state estimation"/>
+  <arg name="do_mapping"        default="false"   doc="Use karto for position measurement (while mapping) and odometry for state estimation"/>
+
+  <arg name="map_frame"         value="map"       doc="Name of the frame affixed to the origin of map"/>
+  <arg name="odom_frame"        value="odom"      doc="Name of the movable frame slowly drifting as the odometry diverges"/>
+  <arg name="robot_frame"       value="robot"     doc="Name of the moving frame affixed to the robot base"/>
+  <arg name="reference_frame"   value="reference" doc="Name of the frame describing the reference trajectory"/>
+  <arg name="optitrack_frame"   value="optitrack" doc="Name of the frame describing the measurement of optitrack"/>
+
+  <arg name="front_scanner_frame" value="front_scanner"/>
+  <arg name="rear_scanner_frame"  value="rear_scanner"/>
+
+
+  <machine name="usr_pc" user="$(env USER)" address="yb_$(env USER)" env-loader="$(find robor_utilities)/scripts/user_env.sh"/>
+  <machine name="yb_pc"  user="youbot"      address="yb_pc" env-loader="/home/youbot/robor_ws/src/robor_utilities/scripts/youbot_env.sh"/>
+
+
+  <node name="joy" pkg="joy" type="joy_node" machine="usr_pc">
+    <param name="dev" type="string" value="/dev/input/js0"/>
+    <param name="deadzone"          value="0.08"/>
+    <param name="autorepeat_rate"   value="0"/>
+  </node>
+
+
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/rviz/robor.rviz" machine="usr_pc" unless="$(arg do_mapping)"/>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/rviz/mapping.rviz" machine="usr_pc" if="$(arg do_mapping)"/>
+
+
+  <node pkg="robor_utilities" type="youbot_visualizer_node" name="youbot_visualizer" machine="usr_pc">
+    <param name="active"         value="false"/>
+    <param name="emit_yb_marker" value="false"/>
+    <param name="loop_rate"      value="30.0"/>
+    <param name="frame_id"       value="$(arg robot_frame)"/>
+  </node>
+
+
+  <group if="$(arg use_only_odometry)">
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)" machine="yb_pc"/>
+  </group>
+
+
+  <group if="$(arg use_optitrack)">
+    <node pkg="mocap_optitrack" type="mocap_node" name="mocap_node" machine="usr_pc">
+      <param name="rigid_bodies/1/child_frame_id"      value="$(arg optitrack_frame)"/>
+      <param name="rigid_bodies/1/parent_frame_id"     value="$(arg map_frame)"/>
+
+      <param name="optitrack_config/multicast_address" value="239.255.42.99"/>
+    </node>
+
+    <node pkg="robor_utilities" type="optitrack_drift_node" name="optitrack_drift" machine="yb_pc">
+      <param name="active"             value="true"/>
+      <param name="loop_rate"          value="$(arg loop_rate)"/>
+
+      <param name="map_frame_id"       value="$(arg map_frame)"/>
+      <param name="odom_frame_id"      value="$(arg odom_frame)"/>
+      <param name="robot_frame_id"     value="$(arg robot_frame)"/>
+      <param name="optitrack_frame_id" value="$(arg optitrack_frame)"/>
+    </node>
+  </group>
+
+
+  <group if="$(arg use_map)">
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/odometry_map/map424.yaml" machine="usr_pc"/>
+
+    <node pkg="amcl" type="amcl" name="amcl" machine="yb_pc" output="screen">
+      <param name="tf_broadcast" value="true"/>
+
+      <param name="global_frame_id" value="$(arg map_frame)"/>
+      <param name="odom_frame_id" value="$(arg odom_frame)"/>
+      <param name="base_frame_id" value="$(arg robot_frame)"/>
+
+      <param name="laser_min_range" value="-1.0"/>
+      <param name="laser_max_range" value="-1.0"/>
+      <param name="laser_max_beams" value="30.0"/>
+
+      <param name="odom_model_type" value="omni"/>
+      <param name="odom_alpha1" value="0.005"/>
+      <param name="odom_alpha2" value="0.005"/>
+      <param name="odom_alpha3" value="0.010"/>
+      <param name="odom_alpha4" value="0.005"/>
+      <param name="odom_alpha5" value="0.003"/>
+
+      <param name="update_min_d" value="0.01"/>
+      <param name="update_min_a" value="0.5"/>
+
+      <param name="initial_pose_x" value="0.0"/>
+      <param name="initial_pose_y" value="0.0"/>
+      <param name="initial_angle" value="0.0"/>
+
+      <param name="initial_cov_xx" value="0.2"/>
+      <param name="initial_cov_yy" value="0.2"/>
+      <param name="initial_cov_aa" value="0.02"/>
+
+      <param name="min_particles" value="500"/>
+      <param name="max_particles" value="2000"/>
+
+      <param name="use_map_topic" value="false"/>
+
+      <!--<remap from="scan" to="front_scan"/>-->
+    </node>
+  </group>
+
+
+  <group if="$(arg do_mapping)">
+    <param name="robot_id" value="1"/>
+    <param name="scan_input_topic" value="karto_in"/>
+    <param name="scan_output_topic" value="karto_out"/>
+    <param name="laser_topic" value="scan"/>
+    <param name="map_topic" value="map"/>
+
+    <param name="laser_frame" value="$(arg robot_frame)"/>
+    <param name="robot_frame" value="$(arg robot_frame)"/>
+    <param name="odometry_frame" value="$(arg odom_frame)"/>
+    <param name="offset_frame" value="offset"/>
+    <param name="map_frame" value="$(arg map_frame)"/>
+
+    <param name="map_service" value="static_map"/>
+
+    <node name="mapper" pkg="nav2d_karto" type="mapper" machine="yb_pc">
+      <param name="grid_resolution" value="0.05"/>
+      <param name="range_threshold" value="40.0"/>
+      <param name="map_update_rate" value="1"/>
+      <param name="publish_pose_graph" value="true"/>
+      <param name="max_covariance" value="0.01"/>
+      <param name="transform_publish_period" value="0.1"/>
+      <param name="min_map_size" value="20"/>
+
+      <param name="min_particles" value="2500"/>
+      <param name="max_particles" value="10000"/>
+
+      <param name="MinimumTravelDistance" value="1.0"/>
+      <param name="MinimumTravelHeading" value="0.52"/>
+      <param name="LoopSearchMaximumDistance" value="10.0"/>
+
+      <!--<remap from="scan" to="front_scan"/>-->
+    </node>
+  </group>
+
+</launch>
+<!-- -->

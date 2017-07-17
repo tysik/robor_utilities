@@ -35,6 +35,8 @@
 
     <param name="parent_frame_id" value="$(arg odom_frame)"/>
     <param name="child_frame_id"  value="$(arg reference_frame)"/>
+
+    <remap from="robot_state" to="odom"/>
   </node>
 
   <node pkg="nodelet" type="nodelet" name="feedback_controller" args="load robor_controllers/FeedbackController $(arg manager)" machine="yb_pc">
@@ -52,6 +54,8 @@
     <param name="max_u"        value="0.5"/>
     <param name="max_v"        value="0.5"/>
     <param name="max_w"        value="3.0"/>
+
+    <remap from="robot_state" to="odom"/>
   </node>
 
   <node pkg="nodelet" type="nodelet" name="urakubo_controller" args="load robor_controllers/UrakuboController $(arg manager)" machine="yb_pc">
@@ -79,6 +83,8 @@
     <param name="max_u"        value="0.4"/>
     <param name="max_v"        value="0.4"/>
     <param name="max_w"        value="2.7"/>
+
+    <remap from="robot_state" to="odom"/>
   </node>
 
   <node pkg="nodelet" type="nodelet" name="potentials_controller" args="load robor_controllers/PotentialsController $(arg manager)" machine="yb_pc">
@@ -99,6 +105,8 @@
     <param name="max_u"        value="0.4"/>
     <param name="max_v"        value="0.4"/>
     <param name="max_w"        value="3.0"/>
+
+    <remap from="robot_state" to="odom"/>
   </node>
 
 </launch>

@@ -100,8 +100,8 @@
   </node>
 
   <node pkg="robor_utilities" type="youbot_visualizer_node" name="youbot_visualizer" machine="usr_pc">
-    <param name="active"         value="false"/>
-    <param name="emit_yb_marker" value="false"/>
+    <param name="active"         value="true"/>
+    <param name="emit_yb_marker" value="true"/>
     <param name="loop_rate"      value="30.0"/>
     <param name="frame_id"       value="$(arg robot_frame)"/>
   </node>

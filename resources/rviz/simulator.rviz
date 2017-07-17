@@ -117,13 +117,16 @@ Visualization Manager:
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /yb_marker
       Name: YouBot
       Namespaces:
-        {}
+        base: true
+        front_hokuyo: true
+        plate: true
+        rear_hokuyo: true
       Queue Size: 100
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48

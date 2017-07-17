@@ -22,7 +22,6 @@
 
   <node pkg="youbot_base_driver" type="youbot_base_driver_node" name="youbot_base_driver" machine="yb_pc">
     <param name="publish_tf"       value="true"/>
-
     <param name="loop_rate"        value="$(arg loop_rate)"/>
 
     <param name="parent_frame_id"  value="$(arg odom_frame)"/>
@@ -30,8 +29,6 @@
 
     <param name="config_file_path" value="/home/youbot/robor_ws/src/youbot_driver/config"/>
     <param name="config_file_name" value="youbot-base"/>
-
-    <remap from="odom" to="robot_state"/>
   </node>
 
 </launch>
