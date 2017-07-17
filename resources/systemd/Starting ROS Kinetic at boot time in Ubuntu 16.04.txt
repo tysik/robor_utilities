@@ -93,3 +93,4 @@ Sources:
 [Starting systemd service after network is up] https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
 [Systemd Unit man pages] http://manpages.ubuntu.com/manpages/zesty/man5/systemd.unit.5.html
 [Systemd Service man pages] http://manpages.ubuntu.com/manpages/xenial/man5/systemd.service.5.html
+*[About serial ports in systemd] http://0pointer.de/blog/projects/serial-console.html
