@@ -1,8 +1,7 @@
-Starting ROS on boot in Ubuntu 16.04 
-(with ROS kinetic)
+Starting ROS Kinetic on boot in Ubuntu 16.04 
 ---
 
-First of all, to start ROS (with roscore or roslaunch) the root needs to know where to look for it. Because of that one needs to add the following line to root .bashrc (type sudo su and then go to /root/.bashrc and copy the lines at the bottom):
+First of all, to start ROS (with roscore or roslaunch) the root needs to know where to look for it. Because of that one needs to add the following line to root .bashrc (type sudo su and then go to /root/.bashrc and copy the line at the bottom of the file):
 
   source /opt/ros/kinetic/setup.bash
 
@@ -20,6 +19,9 @@ Next, we need to prepare a systemd service unit. It is important to know that th
 
 Let's fill this file (use your favourite editor) with the following body:
 
+  # This service is dedicated to run ROS during
+  # the startup of the system
+
   [Unit]
   Description=ROS master 
   Wants=network-online.target
@@ -34,7 +36,7 @@ Let's fill this file (use your favourite editor) with the following body:
   [Install]
   WantedBy=default.target multi-user.target
 
-This definition tells us that the service will be called (started) after the network was setup correctly and will be restarted in case of any failure. We provided a path to a custom script rostart.sh which will be invoked on start.
+This definition tells us that the service will be called (started) after the network was setup correctly and a routable IP was given, and will be restarted in case of any failures. We provided a path to a custom script rostart.sh which will be invoked on start.
 
 Next, we have to prepare our shell script and place it in proper folder. Let's do that with:
 
@@ -59,11 +61,11 @@ The custom script must be executable, therefore we need to provide it with appro
 
   sudo chmod 744 /home/user/rostart.sh
 
-Now it is time to install the systemd service. The service file needs appropriate priviledges too:
+Now it is time to install the service to systemd. The service file needs appropriate priviledges too:
 
   sudo chmod 664 /etc/systemd/system/rostart.service
 
-Then use systemctl (a command to manage systemd):
+Now let's use systemctl (a command to manage systemd) to install the service:
 
   sudo systemctl daemon-reload 
   sudo systemctl enable rostart.service
@@ -73,14 +75,18 @@ You should see the following information:
   Created symlink from /etc/systemd/system/default.target.wants/rostart.service to /etc/systemd/system/rostart.service.
   Created symlink from /etc/systemd/system/multi-user.target.wants/rostart.service to /etc/systemd/system/rostart.service.
 
-
 To test the service before restarting use:
 
-  systemctl start rostart.service
+  sudo systemctl start rostart.service
+
+You can also check the status of the service with 
+
+  systemctl status rostart.service
 
 That's it!
 
 Sources:
+---
 [init.d vs systemd] https://www.tecmint.com/systemd-replaces-init-in-linux/
 [Running ROS as a root] http://answers.ros.org/question/11300/running-ros-as-a-root-user/
 [Preparing systemd service] https://linuxconfig.org/how-to-automatically-execute-shell-script-at-startup-boot-on-systemd-linux
