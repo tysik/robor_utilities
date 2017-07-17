@@ -1,0 +1,89 @@
+Starting ROS on boot in Ubuntu 16.04 
+(with ROS kinetic)
+---
+
+First of all, to start ROS (with roscore or roslaunch) the root needs to know where to look for it. Because of that one needs to add the following line to root .bashrc (type sudo su and then go to /root/.bashrc and copy the lines at the bottom):
+
+  source /opt/ros/kinetic/setup.bash
+
+If we want to use custom packages from e.g. ~/catkin_ws workspace, we can also add:
+
+  source /home/user/catkin_ws/devel/setup.bash
+
+Additionally, if we want to keep the log files in the standard ROS_HOME folder (i.e. /home/user/.ros) it is worth adding the following line too:
+
+  export ROS_HOME=/home/user/.ros
+
+Next, we need to prepare a systemd service unit. It is important to know that the previous version of system manager (init/init.d/SysV init) was deprecated in favor of new systemd manager. The previous system, however, is kept due to compatibility issues. Let's create file called rostart.service in folder /etc/systemd/system/ 
+
+  sudo touch /etc/systemd/system/rostart.service
+
+Let's fill this file (use your favourite editor) with the following body:
+
+  [Unit]
+  Description=ROS master 
+  Wants=network-online.target
+  After=network.target network-online.target
+
+  [Service]
+  Type=simple
+  ExecStart=/home/user/rostart.sh
+  #ExecStop=
+  Restart=on-failure
+
+  [Install]
+  WantedBy=default.target multi-user.target
+
+This definition tells us that the service will be called (started) after the network was setup correctly and will be restarted in case of any failure. We provided a path to a custom script rostart.sh which will be invoked on start.
+
+Next, we have to prepare our shell script and place it in proper folder. Let's do that with:
+
+  touch /home/user/rostart.sh 
+
+We have to fill the body with the script:
+
+  #!/usr/bin/env bash
+
+  export ROS_MASTER_URI=http://my_ip:11311
+  export ROS_HOSTNAME=my_ip
+  export ROS_HOME=/home/user/.ros
+
+  . /opt/ros/kinetic/setup.sh
+  . /home/user/catkin_ws/devel/setup.sh
+
+  roscore # or maybe: roslaunch /home/user/test.launch
+
+Here we optionally export some environment variables, then we source appropriate workspaces and finally we start ROS.
+
+The custom script must be executable, therefore we need to provide it with appropriate priviledges:
+
+  sudo chmod 744 /home/user/rostart.sh
+
+Now it is time to install the systemd service. The service file needs appropriate priviledges too:
+
+  sudo chmod 664 /etc/systemd/system/rostart.service
+
+Then use systemctl (a command to manage systemd):
+
+  sudo systemctl daemon-reload 
+  sudo systemctl enable rostart.service
+
+You should see the following information:
+
+  Created symlink from /etc/systemd/system/default.target.wants/rostart.service to /etc/systemd/system/rostart.service.
+  Created symlink from /etc/systemd/system/multi-user.target.wants/rostart.service to /etc/systemd/system/rostart.service.
+
+
+To test the service before restarting use:
+
+  systemctl start rostart.service
+
+That's it!
+
+Sources:
+[init.d vs systemd] https://www.tecmint.com/systemd-replaces-init-in-linux/
+[Running ROS as a root] http://answers.ros.org/question/11300/running-ros-as-a-root-user/
+[Preparing systemd service] https://linuxconfig.org/how-to-automatically-execute-shell-script-at-startup-boot-on-systemd-linux
+[Starting systemd service after network is up] https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
+[Systemd Unit man pages] http://manpages.ubuntu.com/manpages/zesty/man5/systemd.unit.5.html
+[Systemd Service man pages] http://manpages.ubuntu.com/manpages/xenial/man5/systemd.service.5.html

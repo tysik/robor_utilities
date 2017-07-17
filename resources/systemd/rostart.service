@@ -1,0 +1,16 @@
+# This service is dedicated to run ROS during
+# the startup of the system
+
+[Unit]
+Description=Start roscore
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+Type=simple
+ExecStart=/home/youbot/rostart.sh
+#ExecStop=
+Restart=on-failure
+
+[Install]
+WantedBy=default.target multi-user.target

@@ -39,7 +39,7 @@
       <remap from="simulator_state"     to="robot_state"/>
     </node>
 
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/simulator.rviz" machine="usr_pc" required="true"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/rviz/simulator.rviz" machine="usr_pc" required="true"/>
   </group>
 
   <group unless="$(arg simulator)">
@@ -58,8 +58,8 @@
       <param name="child_frame_id"   value="$(arg robot_frame)"/>
     </node>-->
 
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/robor.rviz" machine="usr_pc" required="true" unless="$(arg do_mapping)"/>
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/mapping.rviz" machine="usr_pc" required="true" if="$(arg do_mapping)"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/rviz/robor.rviz" machine="usr_pc" required="true" unless="$(arg do_mapping)"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/rviz/mapping.rviz" machine="usr_pc" required="true" if="$(arg do_mapping)"/>
   </group>
 
   <!--<node pkg="nodelet" type="nodelet" name="reference_generator" args="load robor_utilities/ReferenceGenerator $(arg manager)" machine="yb_pc">-->
