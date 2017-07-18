@@ -37,19 +37,5 @@ alias rbr_mapping='source $HOME/robor_ws/src/robor_utilities/scripts/start.sh do
 
 alias rbr_connect='ssh youbot@yb_pc'
 alias rbr_env='source $HOME/robor_ws/src/robor_utilities/scripts/user_env.sh'
-alias rbr_shutdown='ssh -t youbot@yb_pc "sudo shutdown -h now"'
-
-### Date and time synchronization between two machines
-
-1. Remove ntp and/or ntpdate on both computers
-2. Install chrony on both computers
-3. On computer which will be used as time server edit (or create) file /etc/chrony/chrony.conf and use the configuration provided in resources/chrony_server.conf.
-4. On computer which will be synchronizing with the server edit (or create) file /etc/chrony/chrony.conf and use the configuration provided in resources/chrony_client.conf.
-5. If the chrony daemon (chronyd) does not start at boot, add the following lines to the /etc/rc.local file on that machine (make sure the paths are correct):
-
-`if [ -f /usr/sbin/chronyd -a -f /etc/chrony/chrony.conf ]; then`
-`  /usr/sbin/chronyd -r -s`
-`  echo "Start chronyd"`
-`fi`
-
-To check the status of chrony use `chronyc tracking`. To check the sources of chrony use `chronyc sources`.
+alias rbr_shutdown='ssh -t youbot@yb_pc "sudo systemctl poweroff"'
+alias rbr_reboot='ssh -t youbot@yb_pc "sudo systemctl reboot"'

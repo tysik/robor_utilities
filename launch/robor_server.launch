@@ -3,6 +3,7 @@
 <launch>
 
   <arg name="loop_rate"         value="100.0"     doc="The loop rate of nodes in Hz"/>
+  <arg name="nodelet_manager"   value="nm"        doc="The main nodelet manager"/>
 
   <arg name="map_frame"         value="map"       doc="Name of the frame affixed to the origin of map"/>
   <arg name="odom_frame"        value="odom"      doc="Name of the movable frame slowly drifting as the odometry diverges"/>
@@ -14,11 +15,10 @@
   <arg name="rear_scanner_frame"  value="rear_scanner"/>
 
 
-  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_front_scanner" args="0.223 0 0 0 0 0 $(arg robot_frame) $(arg front_scanner_frame)"/>
-  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_rear_scanner" args="-0.246 0 0 3.141592 0 0 $(arg robot_frame) $(arg rear_scanner_frame)"/>
+  <node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager"/>
 
 
-  <node pkg="youbot_base_driver" type="youbot_base_driver_node" name="youbot_base_driver" required="true">
+  <node name="youbot_base_driver" pkg="youbot_base_driver" type="youbot_base_driver_node" required="true">
     <param name="publish_tf"       value="true"/>
     <param name="loop_rate"        value="$(arg loop_rate)"/>
 
@@ -30,258 +30,10 @@
   </node>
 
 
-  <node pkg="urg_node" type="urg_node" name="front_hokuyo" respawn="true">
-    <param name="serial_port"    value="/dev/sensors/hokuyo_H1320250"/>
-    <param name="serial_baud"    value="115200"/>
-
-    <param name="frame_id"       value="$(arg front_scanner_frame)"/>
-
-    <param name="calibrate_time" value="true"/>
-    <param name="time_offset"    value="0.0"/>
-
-    <param name="publish_intensity" value="false"/>
-    <param name="publish_multiecho" value="false"/>
-
-    <param name="angle_min"      value="-2.0862"/>
-    <param name="angle_max"      value="2.0923"/>
-
-    <param name="cluster"        value="1"/>
-    <param name="skip"           value="0"/>
-
-    <remap from="scan" to="front_scan"/>
-  </node>
-
-  <node pkg="urg_node" type="urg_node" name="rear_hokuyo" respawn="true">
-    <param name="serial_port"    value="/dev/sensors/hokuyo_H0904847"/>
-    <param name="serial_baud"    value="115200"/>
-
-    <param name="frame_id"       value="$(arg rear_scanner_frame)"/>
-
-    <param name="calibrate_time" value="true"/>
-    <param name="time_offset"    value="0.0"/>
-
-    <param name="publish_intensity" value="false"/>
-    <param name="publish_multiecho" value="false"/>
-
-    <param name="angle_min"      value="-2.0862"/>
-    <param name="angle_max"      value="2.0923"/>
-
-    <param name="cluster"        value="1"/>
-    <param name="skip"           value="0"/>
-
-    <remap from="scan" to="rear_scan"/>
-  </node>
-
-
-  <node pkg="robor_controllers" type="manual_controller_node" name="manual_controller">
-    <param name="active"        value="true"/>
-    <param name="publish_ref_vel" value="false"/>
-
-    <param name="use_keys"      value="false"/>
-    <param name="use_joy"       value="true"/>
-
-    <param name="loop_rate"     value="$(arg loop_rate)"/>
-    <param name="time_constant" value="0.1"/>
-
-    <param name="linear_gain"   value="0.3"/>
-    <param name="angular_gain"  value="0.5"/>
-
-    <param name="parent_frame_id" value="$(arg odom_frame)"/>
-    <param name="child_frame_id"  value="$(arg reference_frame)"/>
-  </node>
-
-
-  <node pkg="robor_controllers" type="feedback_controller_node" name="feedback_controller">
-    <param name="active"       value="false"/>
-    <param name="run"          value="false"/>
-
-    <param name="use_ff"       value="true"/>
-    <param name="loop_rate"    value="$(arg loop_rate)"/>
-
-    <param name="gain_x"       value="0.5"/>
-    <param name="gain_y"       value="0.5"/>
-    <param name="gain_theta"   value="0.5"/>
-
-    <param name="max_u"        value="0.5"/>
-    <param name="max_v"        value="0.5"/>
-    <param name="max_w"        value="3.0"/>
-
-    <remap from="robot_state" to="odom"/>
-  </node>
-
-
-  <node pkg="robor_controllers" type="urakubo_controller_node" name="urakubo_controller">
-    <param name="active"       value="false"/>
-    <param name="run"          value="false"/>
-
-    <param name="normalize_gradient" value="true"/>
-    <param name="loop_rate"     value="$(arg loop_rate)"/>
-
-    <param name="a"            value="0.5"/>
-    <param name="b_"           value="2.5"/>
-    <param name="k_w"          value="0.1"/>
-    <param name="epsilon"      value="0.0001"/>
-    <param name="kappa"        value="3.0"/>
-
-    <param name="min_saddle_gradient"       value="0.05"/>
-    <param name="min_normalizing_potential" value="0.07"/>
-    <param name="min_normalizing_gradient"  value="0.05"/>
-
-    <param name="world_x"      value="0.0"/>
-    <param name="world_y"      value="0.0"/>
-    <param name="world_radius" value="3.0"/>
-
-    <param name="max_u"        value="0.4"/>
-    <param name="max_v"        value="0.4"/>
-    <param name="max_w"        value="2.7"/>
-
-    <remap from="robot_state" to="odom"/>
-  </node>
-
-
-  <node pkg="robor_controllers" type="potentials_controller_node" name="potentials_controller">
-    <param name="active"       value="false"/>
-    <param name="run"          value="false"/>
-    <param name="assisted_control" value="false"/>
-
-    <param name="loop_rate"     value="$(arg loop_rate)"/>
-
-    <param name="R"            value="0.5"/>
-    <param name="eta"          value="1.2"/>
-    <param name="delta"        value="0.2"/>
-    <param name="ko_velocity"  value="0.15"/>
-
-    <param name="gain_pose"    value="0.4"/>
-    <param name="gain_theta"   value="3.0"/>
-
-    <param name="max_u"        value="0.4"/>
-    <param name="max_v"        value="0.4"/>
-    <param name="max_w"        value="3.0"/>
-
-    <remap from="robot_state" to="odom"/>
-  </node>
-
-
-  <node pkg="robor_utilities" type="reference_generator_node" name="reference_generator">
-    <param name="active"                 value="true"/>
-    <param name="loop_rate"              value="$(arg loop_rate)"/>
-
-    <param name="parent_frame_id"        value="$(arg odom_frame)"/>
-    <param name="child_frame_id"         value="$(arg reference_frame)"/>
-
-    <param name="continuous_angle"       value="false"/>
-    <param name="trajectory_paused"      value="false"/>
-    <param name="trajectory_stopped"     value="false"/>
-
-    <param name="trajectory_type"        value="0"/>
-
-    <param name="initial_x"              value="0.0"/>
-    <param name="initial_y"              value="0.0"/>
-    <param name="initial_theta"          value="0.0"/>
-    <param name="linear_velocity"        value="0.1"/>
-    <param name="harmonic_period"        value="30.0"/>
-    <param name="harmonic_radius_x"      value="1.0"/>
-    <param name="harmonic_radius_y"      value="0.5"/>
-    <param name="harmonic_multiplier_x"  value="1.0"/>
-    <param name="harmonic_multiplier_y"  value="2.0"/>
-  </node>
-
-
-  <node pkg="robor_utilities" type="data_recorder_node" name="data_recorder">
-    <param name="active"                    value="false"/>
-    <param name="recording"                 value="false"/>
-    <param name="loop_rate"                 value="$(arg loop_rate)"/>
-
-    <param name="record_pose"               value="true"/>
-    <param name="record_reference_pose"     value="true"/>
-    <param name="record_velocity"           value="true"/>
-    <param name="record_reference_velocity" value="true"/>
-    <param name="record_controls"           value="true"/>
-  </node>
-
-
-  <node pkg="joy" type="joy_node" name="yb_joy">
-    <param name="dev" type="string" value="/dev/input/js0"/>
-    <param name="deadzone"          value="0.08"/>
-    <param name="autorepeat_rate"   value="0"/>
-  </node>
-
-
-  <node pkg="obstacle_detector" type="scans_merger_node" name="scans_merger">
-    <param name="active"            value="true"/>
-    <param name="publish_scan"      value="true"/>
-    <param name="publish_pcl"       value="false"/>
-
-    <param name="ranges_num"        value="1000"/>
-
-    <param name="min_scanner_range" value="0.05"/>
-    <param name="max_scanner_range" value="6.0"/>
-
-    <param name="min_x_range"       value="-10.0"/>
-    <param name="max_x_range"       value="10.0"/>
-    <param name="min_y_range"       value="-10.0"/>
-    <param name="max_y_range"       value="10.0"/>
-
-    <param name="front_scan_frame_id" value="$(arg front_scanner_frame)"/>
-    <param name="rear_scan_frame_id"  value="$(arg rear_scanner_frame)"/>
-    <param name="target_frame_id"     value="$(arg robot_frame)"/>
-  </node>
-
-
-  <node pkg="obstacle_detector" type="obstacle_extractor_node" name="obstacle_extractor">
-    <param name="active"               value="false"/>
-    <param name="use_scan"             value="true"/>
-    <param name="use_pcl"              value="false"/>
-
-    <param name="use_split_and_merge"  value="false"/>
-    <param name="discard_converted_segments" value="true"/>
-    <param name="transform_coordinates"      value="true"/>
-
-    <param name="min_group_points"     value="5"/>
-    <param name="max_group_distance"   value="0.1"/>
-    <param name="distance_proportion"  value="0.006136"/>
-    <param name="max_split_distance"   value="0.07"/>
-    <param name="max_merge_separation" value="0.15"/>
-    <param name="max_merge_spread"     value="0.07"/>
-    <param name="max_circle_radius"    value="0.6"/>
-    <param name="radius_enlargement"   value="0.29"/>
-
-    <param name="frame_id"             value="$(arg map_frame)"/>
-  </node>
-
-
-  <node pkg="obstacle_detector" type="obstacle_tracker_node" name="obstacle_tracker">
-    <param name="active"                  value="false"/>
-
-    <param name="loop_rate"               value="$(arg loop_rate)"/>
-    <param name="tracking_duration"       value="2.0"/>
-    <param name="min_correspondence_cost" value="0.6"/>
-    <param name="std_correspondence_dev"  value="0.15"/>
-    <param name="process_variance"        value="0.1"/>
-    <param name="process_rate_variance"   value="0.1"/>
-    <param name="measurement_variance"    value="1.0"/>
-
-    <remap from="tracked_obstacles" to="obstacles"/>
-  </node>
-
-
-  <node pkg="obstacle_detector" type="obstacle_publisher_node" name="obstacle_publisher">
-    <param name="active"           value="false"/>
-    <param name="reset"            value="false"/>
-    <param name="fusion_example"   value="false"/>
-    <param name="fission_example"  value="false"/>
-
-    <param name="loop_rate"        value="$(arg loop_rate)"/>
-    <param name="radius_margin"    value="0.29"/>
-
-    <param name="frame_id"         value="$(arg map_frame)"/>
-
-    <rosparam param="x_vector">[-1.0, 0.0, 1.0]</rosparam>
-    <rosparam param="y_vector">[0.0, -1.0, 0.0]</rosparam>
-    <rosparam param="r_vector">[0.5, 0.5, 0.5]</rosparam>
-    <rosparam param="vx_vector">[0.0, 0.0, 0.0]</rosparam>
-    <rosparam param="vy_vector">[0.0, 0.0, 0.0]</rosparam>
-  </node>
+  <include file="$(find robor_utilities)/launch/sublaunch/sensors.launch" pass_all_args="true"/>
+  <include file="$(find robor_utilities)/launch/sublaunch/utilities.launch" pass_all_args="true"/>
+  <include file="$(find robor_utilities)/launch/sublaunch/controllers.launch" pass_all_args="true"/>
+  <include file="$(find robor_utilities)/launch/sublaunch/obstacle_detector.launch" pass_all_args="true"/>
 
 </launch>
 <!-- -->

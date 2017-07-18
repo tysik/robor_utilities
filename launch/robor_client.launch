@@ -35,8 +35,8 @@
 
 
   <node pkg="robor_utilities" type="youbot_visualizer_node" name="youbot_visualizer" machine="usr_pc">
-    <param name="active"         value="false"/>
-    <param name="emit_yb_marker" value="false"/>
+    <param name="active"         value="true"/>
+    <param name="emit_yb_marker" value="true"/>
     <param name="loop_rate"      value="30.0"/>
     <param name="frame_id"       value="$(arg robot_frame)"/>
   </node>
@@ -68,9 +68,9 @@
 
 
   <group if="$(arg use_map)">
-    <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/odometry_map/map424.yaml" machine="usr_pc"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/odometry_map/map.yaml" machine="usr_pc"/>
 
-    <node pkg="amcl" type="amcl" name="amcl" machine="yb_pc" output="screen">
+    <node pkg="amcl" type="amcl" name="amcl" machine="yb_pc">
       <param name="tf_broadcast" value="true"/>
 
       <param name="global_frame_id" value="$(arg map_frame)"/>
@@ -79,17 +79,18 @@
 
       <param name="laser_min_range" value="-1.0"/>
       <param name="laser_max_range" value="-1.0"/>
-      <param name="laser_max_beams" value="30.0"/>
+      <param name="laser_max_beams" value="100.0"/>
 
       <param name="odom_model_type" value="omni"/>
-      <param name="odom_alpha1" value="0.005"/>
-      <param name="odom_alpha2" value="0.005"/>
-      <param name="odom_alpha3" value="0.010"/>
-      <param name="odom_alpha4" value="0.005"/>
-      <param name="odom_alpha5" value="0.003"/>
+      <param name="odom_alpha1" value="0.2"/>
+      <param name="odom_alpha2" value="0.2"/>
+      <param name="odom_alpha3" value="0.2"/>
+      <param name="odom_alpha4" value="0.2"/>
+      <param name="odom_alpha5" value="0.2"/>
 
-      <param name="update_min_d" value="0.01"/>
+      <param name="update_min_d" value="0.2"/>
       <param name="update_min_a" value="0.5"/>
+      <param name="resample_interval" value="2"/>
 
       <param name="initial_pose_x" value="0.0"/>
       <param name="initial_pose_y" value="0.0"/>

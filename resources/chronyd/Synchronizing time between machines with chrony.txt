@@ -1,0 +1,49 @@
+The time synchronization in ROS is quite important because of TF package, which often interpolates transformations between frames in specific points of time. Therefore one needs to assure that two machines running ROS have almost exact time. The default time synchronization tool in Ubuntu 16.04 is ntpd.
+
+1. Remove ntp and/or ntpdate on both computers
+2. Install chrony on both computers
+3. On computer which will be used as time server edit (or create) file /etc/chrony/chrony.conf and use the configuration provided in resources/chrony_server.conf.
+4. On computer which will be synchronizing with the server edit (or create) file /etc/chrony/chrony.conf and use the configuration provided in resources/chrony_client.conf.
+5. If the chrony daemon (chronyd) does not start at boot, add the following lines to the /etc/rc.local file on that machine (make sure the paths are correct):
+
+`if [ -f /usr/sbin/chronyd -a -f /etc/chrony/chrony.conf ]; then`
+`  /usr/sbin/chronyd -r -s`
+`  echo "Start chronyd"`
+`fi`
+
+To check the status of chrony use `chronyc tracking`. To check the sources of chrony use `chronyc sources`.
+
+
+
+## install
+$ sudo yum install chrony | sydo apt-get install chrony
+ 
+## configure
+'offline' only poll when chronyc is online
+'auto_offline' assume server gone offline when 2 requests without reply
+'iburst' on start make four measurements over short period (rather than the usual periodic measurements)
+'minstratum' increase stratum of the source to a minimum, to avoid being selected; chronyd preferes lower stratum sources
+'polltarget' num of measurements used in regression algorithm; higher target means shorter polling intervals
+'prefer' prefer this source over sources without prefer option.
+'noselect' never select this source
+ 
+$ cat /etc/chrony.conf
+server 1.2.3.4 offline
+server 5.6.7.8 offline
+server 9.10.11.12 offline
+driftfile /etc/chrony.drift
+keyfile /etc/chrony.keys
+generatecommandkey
+commandkey 1
+rtconutc
+rtcsync
+$ systemctl restart chronyd
+ 
+# show current sources
+$ chronyc sources -v
+# show rate and offset estimation performance of sources
+$ chronyc sourcestats
+# show system clock performance
+$ chronyc tracking
+# set offline/activity; also done automatically by 'networkmanager-dispatcher-chrony' or 'netctl-dispatcher-chrony'
+$ chronyc -a activity

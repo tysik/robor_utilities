@@ -1,11 +1,11 @@
 # This service is dedicated to run ROS during
-# the startup of the system.
-# Copy the rostart.sh file to /usr/local/bin/
+# the startup of the system
 
 [Unit]
-Description=Start roscore
+Description=ROS master
+Requires=dev-sensors-hokuyo_H0904847.device dev-sensors-hokuyo_H1320250.device
 Wants=network-online.target
-After=network.target network-online.target
+After=network.target network-online.target dev-sensors-hokuyo_H0904847.device dev-sensors-hokuyo_H1320250.device
 
 [Service]
 Type=simple

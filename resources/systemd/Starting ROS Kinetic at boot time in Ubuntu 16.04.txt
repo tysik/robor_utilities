@@ -1,7 +1,7 @@
 Starting ROS Kinetic on boot in Ubuntu 16.04 
 ---
 
-First of all, to start ROS (with roscore or roslaunch) the root needs to know where to look for it. Because of that one needs to add the following line to root .bashrc (type sudo su and then go to /root/.bashrc and copy the line at the bottom of the file):
+First of all, to start ROS (with roscore or roslaunch) the root needs to know where to look for it. Because of that one needs to add the following line to root .bashrc (type sudo su and then go to /root/.bashrc and copy the following line at the bottom of the file):
 
   source /opt/ros/kinetic/setup.bash
 
@@ -13,7 +13,7 @@ Additionally, if we want to keep the log files in the standard ROS_HOME folder (
 
   export ROS_HOME=/home/user/.ros
 
-Next, we need to prepare a systemd service unit. It is important to know that the previous version of system manager (init/init.d/SysV init) was deprecated in favor of new systemd manager. The previous system, however, is kept due to compatibility issues. Let's create file called rostart.service in folder /etc/systemd/system/ 
+Next, we need to prepare a systemd service unit. It is important to know that the previous version of system manager (init/init.d/SysV init) was deprecated in favor of new systemd manager. The previous system, however, is kept due to compatibility issues (it can be confusing to see both upstart jobs and systemd units on a single machine). Let's create file called rostart.service in folder /etc/systemd/system/ 
 
   sudo touch /etc/systemd/system/rostart.service
 
@@ -23,24 +23,25 @@ Let's fill this file (use your favourite editor) with the following body:
   # the startup of the system
 
   [Unit]
-  Description=ROS master 
+  Description=ROS master
+  Requires=dev-sensors-hokuyo_H0904847.device dev-sensors-hokuyo_H1320250.device
   Wants=network-online.target
-  After=network.target network-online.target
+  After=network.target network-online.target dev-sensors-hokuyo_H0904847.device dev-sensors-hokuyo_H1320250.device
 
   [Service]
   Type=simple
-  ExecStart=/home/user/rostart.sh
+  ExecStart=/usr/local/bin/rostart.sh
   #ExecStop=
   Restart=on-failure
 
   [Install]
   WantedBy=default.target multi-user.target
 
-This definition tells us that the service will be called (started) after the network was setup correctly and a routable IP was given, and will be restarted in case of any failures. We provided a path to a custom script rostart.sh which will be invoked on start.
+This definition tells us that the service unit (named ROS master) will be called (started) after the network was setup correctly and a routable IP was given, and after two Hokuyo LRFs are found (normally the LRFs are found under /dev/ttyACMx after plugging them to the computer, which would result in dev-ttyACMx.device, but because we use use udev rules to create symlinks /dev/sensors/hokuyo_xxx, we use these as reference). The service will be restarted in case of any failures. We have to provide a path to a custom script rostart.sh which will be invoked on start (it can be any executable in general).
 
 Next, we have to prepare our shell script and place it in proper folder. Let's do that with:
 
-  touch /home/user/rostart.sh 
+  sudo touch /usr/local/bin/rostart.sh
 
 We have to fill the body with the script:
 
@@ -53,15 +54,15 @@ We have to fill the body with the script:
   . /opt/ros/kinetic/setup.sh
   . /home/user/catkin_ws/devel/setup.sh
 
-  roscore # or maybe: roslaunch /home/user/test.launch
+  roscore # or maybe: roslaunch /home/user/some_test.launch
 
-Here we optionally export some environment variables, then we source appropriate workspaces and finally we start ROS.
+The script sets some environment variables, sources appropriate workspaces and finally it starts ROS.
 
 The custom script must be executable, therefore we need to provide it with appropriate priviledges:
 
   sudo chmod 744 /home/user/rostart.sh
 
-Now it is time to install the service to systemd. The service file needs appropriate priviledges too:
+The service file also needs appropriate priviledges:
 
   sudo chmod 664 /etc/systemd/system/rostart.service
 
@@ -75,7 +76,7 @@ You should see the following information:
   Created symlink from /etc/systemd/system/default.target.wants/rostart.service to /etc/systemd/system/rostart.service.
   Created symlink from /etc/systemd/system/multi-user.target.wants/rostart.service to /etc/systemd/system/rostart.service.
 
-To test the service before restarting use:
+To test the service before restarting computer use:
 
   sudo systemctl start rostart.service
 
@@ -85,8 +86,10 @@ You can also check the status of the service with
 
 That's it!
 
+
 Sources:
 ---
+
 [init.d vs systemd] https://www.tecmint.com/systemd-replaces-init-in-linux/
 [Running ROS as a root] http://answers.ros.org/question/11300/running-ros-as-a-root-user/
 [Preparing systemd service] https://linuxconfig.org/how-to-automatically-execute-shell-script-at-startup-boot-on-systemd-linux

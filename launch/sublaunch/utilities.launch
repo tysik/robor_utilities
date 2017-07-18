@@ -1,0 +1,66 @@
+<!-- Robor controllers -->
+<launch>
+
+  <arg name="loop_rate"/>
+  <arg name="nodelet_manager"/>
+
+  <arg name="map_frame"/>
+  <arg name="odom_frame"/>
+  <arg name="robot_frame"/>
+  <arg name="reference_frame"/>
+  <arg name="optitrack_frame"/>
+
+  <arg name="front_scanner_frame"/>
+  <arg name="rear_scanner_frame"/>
+
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_front_scanner" args="0.223 0 0 0 0 0 $(arg robot_frame) $(arg front_scanner_frame)"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_rear_scanner" args="-0.246 0 0 3.141592 0 0 $(arg robot_frame) $(arg rear_scanner_frame)"/>
+
+
+  <node name="reference_generator" pkg="robor_utilities" type="reference_generator_node">
+    <param name="active"                 value="true"/>
+    <param name="loop_rate"              value="$(arg loop_rate)"/>
+
+    <param name="parent_frame_id"        value="$(arg odom_frame)"/>
+    <param name="child_frame_id"         value="$(arg reference_frame)"/>
+
+    <param name="continuous_angle"       value="false"/>
+    <param name="trajectory_paused"      value="false"/>
+    <param name="trajectory_stopped"     value="false"/>
+
+    <param name="trajectory_type"        value="0"/>
+
+    <param name="initial_x"              value="0.0"/>
+    <param name="initial_y"              value="0.0"/>
+    <param name="initial_theta"          value="0.0"/>
+    <param name="linear_velocity"        value="0.1"/>
+    <param name="harmonic_period"        value="30.0"/>
+    <param name="harmonic_radius_x"      value="1.0"/>
+    <param name="harmonic_radius_y"      value="0.5"/>
+    <param name="harmonic_multiplier_x"  value="1.0"/>
+    <param name="harmonic_multiplier_y"  value="2.0"/>
+  </node>
+
+
+  <node name="data_recorder" pkg="robor_utilities" type="data_recorder_node">
+    <param name="active"                    value="false"/>
+    <param name="recording"                 value="false"/>
+    <param name="loop_rate"                 value="$(arg loop_rate)"/>
+
+    <param name="record_pose"               value="true"/>
+    <param name="record_reference_pose"     value="true"/>
+    <param name="record_velocity"           value="true"/>
+    <param name="record_reference_velocity" value="true"/>
+    <param name="record_controls"           value="true"/>
+  </node>
+
+
+  <node name="yb_joy" pkg="joy" type="joy_node">
+    <param name="dev" type="string" value="/dev/input/js0"/>
+    <param name="deadzone"          value="0.08"/>
+    <param name="autorepeat_rate"   value="0"/>
+  </node>
+
+</launch>
+<!-- -->
