@@ -10,7 +10,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Merged Scan
+    SyncSource: Front Scan
   - Class: Data Recorder
     Name: Data Recorder
   - Class: Manual Controller
@@ -231,6 +231,8 @@ Visualization Manager:
           Value: true
         odom:
           Value: true
+        optitrack:
+          Value: true
         rear_scanner:
           Value: true
         reference:
@@ -252,6 +254,8 @@ Visualization Manager:
                 {}
               rear_scanner:
                 {}
+          optitrack:
+            {}
       Update Interval: 0
       Value: true
   Enabled: true
@@ -278,11 +282,11 @@ Visualization Manager:
         Value: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Scale: 111.246323
+      Scale: 106.509361
       Target Frame: map
       Value: TopDownOrtho (rviz)
-      X: 0
-      Y: 0
+      X: 4.0231514
+      Y: -0.751867235
     Saved:
       - Angle: 0
         Class: rviz/TopDownOrtho

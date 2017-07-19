@@ -34,17 +34,6 @@
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/rviz/mapping.rviz" machine="usr_pc" if="$(arg do_mapping)"/>
 
 
-  <node name="scan_rectifier" pkg="obstacle_detector" type="scan_rectifier_node" machine="yb_pc">
-    <param name="active"            value="true"/>
-
-    <param name="scan_rate"        value="10"/>
-    <param name="odom_rate"        value="100"/>
-
-    <param name="robot_frame"      value="$(arg robot_frame)"/>
-    <param name="scanner_frame"    value="$(arg front_scanner_frame)"/>
-  </node>
-
-
   <node pkg="robor_utilities" type="youbot_visualizer_node" name="youbot_visualizer" machine="usr_pc">
     <param name="active"         value="true"/>
     <param name="emit_yb_marker" value="true"/>
@@ -125,10 +114,10 @@
     <param name="robot_id" value="1"/>
     <param name="scan_input_topic" value="karto_in"/>
     <param name="scan_output_topic" value="karto_out"/>
-    <param name="laser_topic" value="scan"/>
+    <param name="laser_topic" value="front_scan"/>
     <param name="map_topic" value="map"/>
 
-    <param name="laser_frame" value="$(arg robot_frame)"/>
+    <param name="laser_frame" value="$(arg front_scanner_frame)"/>
     <param name="robot_frame" value="$(arg robot_frame)"/>
     <param name="odometry_frame" value="$(arg odom_frame)"/>
     <param name="offset_frame" value="offset"/>
