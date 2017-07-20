@@ -45,12 +45,19 @@ class YoubotVisualizerNodelet : public nodelet::Nodelet
 {
 public:
   virtual void onInit() {
-    NODELET_INFO("Initializing Youbot Visualizer Nodelet");
-
     ros::NodeHandle nh = getNodeHandle();
     ros::NodeHandle nh_local = getPrivateNodeHandle();
 
-    youbot_visualizer_ = std::shared_ptr<YoubotVisualizer>(new YoubotVisualizer(nh, nh_local));
+    try {
+      NODELET_INFO("[Youbot Visualizer]: Initializing nodelet");
+      youbot_visualizer_ = std::shared_ptr<YoubotVisualizer>(new YoubotVisualizer(nh, nh_local));
+    }
+    catch (const char* s) {
+      NODELET_FATAL_STREAM("[Youbot Visualizer]: " << s);
+    }
+    catch (...) {
+      NODELET_FATAL_STREAM("[Youbot Visualizer]: Unexpected error");
+    }
   }
 
 private:

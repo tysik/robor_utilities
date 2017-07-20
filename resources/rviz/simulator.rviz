@@ -28,8 +28,6 @@ Panels:
     Name: Simulator
   - Class: Feedback Controller
     Name: Feedback Controller
-  - Class: State Estimator
-    Name: State Estimator
   - Class: Obstacle Publisher
     Name: Obstacle Publisher
   - Class: Potentials Controller
@@ -175,8 +173,6 @@ Window Geometry:
   Selection:
     collapsed: false
   Simulator:
-    collapsed: false
-  State Estimator:
     collapsed: false
   Time:
     collapsed: false

@@ -1,13 +1,5 @@
 <library path="lib/librobor_utilities_nodelets">
 
-  <class name="robor_utilities/StateEstimator"
-         type="robor_utilities::StateEstimatorNodelet"
-         base_class_type="nodelet::Nodelet">
-    <description>
-      State Estimator Nodelet
-    </description>
-  </class>
-
   <class name="robor_utilities/Simulator"
          type="robor_utilities::SimulatorNodelet"
          base_class_type="nodelet::Nodelet">

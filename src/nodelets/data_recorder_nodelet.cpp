@@ -45,12 +45,19 @@ class DataRecorderNodelet : public nodelet::Nodelet
 {
 public:
   virtual void onInit() {
-    NODELET_INFO("Initializing Data Recorder Nodelet");
-
     ros::NodeHandle nh = getNodeHandle();
     ros::NodeHandle nh_local = getPrivateNodeHandle();
 
-    data_recorder_ = std::shared_ptr<DataRecorder>(new DataRecorder(nh, nh_local));
+    try {
+      NODELET_INFO("[Data Recorder]: Initializing nodelet");
+      data_recorder_ = std::shared_ptr<DataRecorder>(new DataRecorder(nh, nh_local));
+    }
+    catch (const char* s) {
+      NODELET_FATAL_STREAM("[Data Recorder]: " << s);
+    }
+    catch (...) {
+      NODELET_FATAL_STREAM("[Data Recorder]: Unexpected error");
+    }
   }
 
 private:

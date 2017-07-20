@@ -7,8 +7,13 @@
   <arg name="robot_frame"       value="robot"     doc="Name of the moving frame affixed to the robot base"/>
   <arg name="reference_frame"   value="reference" doc="Name of the frame describing the reference trajectory"/>
 
+
+  <!-- Nodelet manager -->
+  <node name="nm" pkg="nodelet" type="nodelet" args="manager" output="screen"/>
+
+
   <!-- Simulator -->
-  <node pkg="robor_utilities" type="simulator_node" name="simulator">
+  <node name="simulator" pkg="nodelet" type="nodelet" args="load robor_utilities/Simulator nm">
     <param name="active"           value="true"/>
     <param name="continuous_angle" value="true"/>
 
@@ -26,11 +31,13 @@
     <remap from="simulator_state"     to="robot_state"/>
   </node>
 
+
   <!-- Rviz -->
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robor_utilities)/resources/rviz/simulator.rviz"/>
 
+
   <!-- Motion Controllers -->
-  <node pkg="robor_controllers" type="manual_controller_node" name="manual_controller">
+  <node name="manual_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/ManualController nm">
     <param name="active"        value="true"/>
     <param name="publish_ref_vel" value="false"/>
 
@@ -47,7 +54,8 @@
     <param name="child_frame_id"  value="$(arg reference_frame)"/>
   </node>
 
-  <node pkg="robor_controllers" type="feedback_controller_node" name="feedback_controller">
+
+  <node name="feedback_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/FeedbackController nm">
     <param name="active"       value="false"/>
     <param name="run"          value="false"/>
 
@@ -63,7 +71,8 @@
     <param name="max_w"        value="3.0"/>
   </node>
 
-  <node pkg="robor_controllers" type="urakubo_controller_node" name="urakubo_controller">
+
+  <node name="urakubo_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/UrakuboController nm">
     <param name="active"       value="false"/>
     <param name="run"          value="false"/>
 
@@ -89,7 +98,8 @@
     <param name="max_w"        value="2.7"/>
   </node>
 
-  <node pkg="robor_controllers" type="potentials_controller_node" name="potentials_controller">
+
+  <node name="potentials_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/PotentialsController nm">
     <param name="active"       value="false"/>
     <param name="run"          value="false"/>
     <param name="assisted_control" value="false"/>
@@ -109,8 +119,9 @@
     <param name="max_w"        value="3.0"/>
   </node>
 
+
   <!-- Obstacle publisher -->
-  <node pkg="obstacle_detector" type="obstacle_publisher_node" name="obstacle_publisher">
+  <node name="obstacle_publisher" pkg="nodelet" type="nodelet" args="load obstacle_detector/ObstaclePublisher nm">
     <param name="active"           value="false"/>
     <param name="reset"            value="false"/>
     <param name="fusion_example"   value="false"/>
@@ -128,8 +139,9 @@
     <rosparam param="vy_vector">[0.0, 0.0, 0.0]</rosparam>
   </node>
 
+
   <!-- Utilities -->
-  <node pkg="robor_utilities" type="reference_generator_node" name="reference_generator">
+  <node name="reference_generator" pkg="nodelet" type="nodelet" args="load robor_utilities/ReferenceGenerator nm">
     <param name="active"                 value="true"/>
     <param name="loop_rate"              value="$(arg loop_rate)"/>
 
@@ -153,7 +165,8 @@
     <param name="harmonic_multiplier_y"  value="2.0"/>
   </node>
 
-  <node pkg="robor_utilities" type="data_recorder_node" name="data_recorder">
+
+  <node name="data_recorder" pkg="nodelet" type="nodelet" args="load robor_utilities/DataRecorder nm">
     <param name="active"                    value="false"/>
     <param name="recording"                 value="false"/>
     <param name="loop_rate"                 value="$(arg loop_rate)"/>
@@ -165,12 +178,14 @@
     <param name="record_controls"           value="true"/>
   </node>
 
-  <node pkg="robor_utilities" type="youbot_visualizer_node" name="youbot_visualizer">
-    <param name="active"         value="true"/>
+
+  <node name="youbot_visualizer" pkg="nodelet" type="nodelet" args="load robor_utilities/YoubotVisualizer nm">
+      <param name="active"         value="true"/>
     <param name="emit_yb_marker" value="true"/>
     <param name="loop_rate"      value="30.0"/>
     <param name="frame_id"       value="$(arg robot_frame)"/>
   </node>
+
 
   <node name="joy" pkg="joy" type="joy_node">
     <param name="dev" type="string" value="/dev/input/js0"/>
@@ -178,7 +193,8 @@
     <param name="autorepeat_rate"   value="0"/>
   </node>
 
-  <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)"/>
+
+  <node name="map_to_odom" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)"/>
 
 </launch>
 <!-- -->

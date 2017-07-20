@@ -45,12 +45,19 @@ class ReferenceGeneratorNodelet : public nodelet::Nodelet
 {
 public:
   virtual void onInit() {
-    NODELET_INFO("Initializing Reference Generator Nodelet");
-
     ros::NodeHandle nh = getNodeHandle();
     ros::NodeHandle nh_local = getPrivateNodeHandle();
 
-    reference_generator_ = std::shared_ptr<ReferenceGenerator>(new ReferenceGenerator(nh, nh_local));
+    try {
+      NODELET_INFO("[Reference Generator]: Initializing nodelet");
+      reference_generator_ = std::shared_ptr<ReferenceGenerator>(new ReferenceGenerator(nh, nh_local));
+    }
+    catch (const char* s) {
+      NODELET_FATAL_STREAM("[Reference Generator]: " << s);
+    }
+    catch (...) {
+      NODELET_FATAL_STREAM("[Reference Generator]: Unexpected error");
+    }
   }
 
 private:

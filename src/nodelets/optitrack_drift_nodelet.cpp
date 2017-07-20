@@ -45,12 +45,19 @@ class OptitrackDriftNodelet : public nodelet::Nodelet
 {
 public:
   virtual void onInit() {
-    NODELET_INFO("Initializing Optitrack Drift Nodelet");
-
     ros::NodeHandle nh = getNodeHandle();
     ros::NodeHandle nh_local = getPrivateNodeHandle();
 
-    optitrack_drift_ = std::shared_ptr<OptitrackDrift>(new OptitrackDrift(nh, nh_local));
+    try {
+      NODELET_INFO("[Optitrack Drift]: Initializing nodelet");
+      optitrack_drift_ = std::shared_ptr<OptitrackDrift>(new OptitrackDrift(nh, nh_local));
+    }
+    catch (const char* s) {
+      NODELET_FATAL_STREAM("[Optitrack Drift]: " << s);
+    }
+    catch (...) {
+      NODELET_FATAL_STREAM("[Optitrack Drift]: Unexpected error");
+    }
   }
 
 private:

@@ -1,13 +1,5 @@
 <library path="lib/librobor_utilities_gui">
 
-  <class name="State Estimator"
-         type="robor_utilities::StateEstimatorPanel"
-         base_class_type="rviz::Panel">
-    <description>
-      State Estimator Panel
-    </description>
-  </class>
-
   <class name="Simulator"
          type="robor_utilities::SimulatorPanel"
          base_class_type="rviz::Panel">

@@ -45,12 +45,19 @@ class SimulatorNodelet : public nodelet::Nodelet
 {
 public:
   virtual void onInit() {
-    NODELET_INFO("Initializing Simulator Nodelet");
-
     ros::NodeHandle nh = getNodeHandle();
     ros::NodeHandle nh_local = getPrivateNodeHandle();
 
-    simulator_ = std::shared_ptr<Simulator>(new Simulator(nh, nh_local));
+    try {
+      NODELET_INFO("[Simulator]: Initializing nodelet");
+      simulator_ = std::shared_ptr<Simulator>(new Simulator(nh, nh_local));
+    }
+    catch (const char* s) {
+      NODELET_FATAL_STREAM("[Simulator]: " << s);
+    }
+    catch (...) {
+      NODELET_FATAL_STREAM("[Simulator]: Unexpected error");
+    }
   }
 
 private:

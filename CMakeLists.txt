@@ -9,7 +9,7 @@ find_package(Boost 1.54.0 REQUIRED system)
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES state_estimator simulator reference_generator data_recorder youbot_visualizer optitrack_drift
+  LIBRARIES simulator reference_generator data_recorder youbot_visualizer optitrack_drift
   CATKIN_DEPENDS tf joy rviz roscpp roslaunch nodelet std_srvs nav_msgs sensor_msgs geometry_msgs
 )
 
@@ -18,10 +18,6 @@ include_directories(include ${catkin_INCLUDE_DIRS} ${ARMADILLO_INCLUDE_DIRS})
 #
 # Build libs
 #
-add_library(state_estimator src/state_estimator.cpp)
-target_link_libraries(state_estimator ${catkin_LIBRARIES} ${ARMADILLO_LIBRARIES})
-add_dependencies(state_estimator ${catkin_EXPORTED_TARGETS})
-
 add_library(simulator src/simulator.cpp)
 target_link_libraries(simulator ${catkin_LIBRARIES})
 add_dependencies(simulator ${catkin_EXPORTED_TARGETS})
@@ -45,9 +41,6 @@ add_dependencies(optitrack_drift ${catkin_EXPORTED_TARGETS})
 #
 # Build nodes
 #
-add_executable(state_estimator_node src/nodes/state_estimator_node.cpp)
-target_link_libraries(state_estimator_node state_estimator)
-
 add_executable(simulator_node src/nodes/simulator_node.cpp)
 target_link_libraries(simulator_node simulator)
 
@@ -67,13 +60,12 @@ target_link_libraries(optitrack_drift_node optitrack_drift)
 # Build nodelets
 #
 add_library(${PROJECT_NAME}_nodelets
-  src/nodelets/state_estimator_nodelet.cpp
   src/nodelets/simulator_nodelet.cpp
   src/nodelets/reference_generator_nodelet.cpp
   src/nodelets/data_recorder_nodelet.cpp
   src/nodelets/youbot_visualizer_nodelet.cpp
   src/nodelets/optitrack_drift_nodelet.cpp)
-target_link_libraries(${PROJECT_NAME}_nodelets state_estimator simulator reference_generator data_recorder youbot_visualizer optitrack_drift)
+target_link_libraries(${PROJECT_NAME}_nodelets simulator reference_generator data_recorder youbot_visualizer optitrack_drift)
 
 #
 # Build rviz plugins
@@ -96,7 +88,6 @@ add_library(${PROJECT_NAME}_gui
     src/displays/path_display.cpp include/${PROJECT_NAME}/displays/path_display.h
     src/displays/pose_visual.cpp include/${PROJECT_NAME}/displays/pose_visual.h
     #
-    src/panels/state_estimator_panel.cpp include/${PROJECT_NAME}/panels/state_estimator_panel.h
     src/panels/simulator_panel.cpp include/${PROJECT_NAME}/panels/simulator_panel.h
     src/panels/reference_generator_panel.cpp include/${PROJECT_NAME}/panels/reference_generator_panel.h
     src/panels/data_recorder_panel.cpp include/${PROJECT_NAME}/panels/data_recorder_panel.h)
@@ -106,7 +97,7 @@ add_dependencies(${PROJECT_NAME}_gui ${catkin_EXPORTED_TARGETS})
 #
 # Install libraries
 #
-install(TARGETS state_estimator simulator reference_generator data_recorder youbot_visualizer optitrack_drift ${PROJECT_NAME}_nodelets ${PROJECT_NAME}_gui
+install(TARGETS simulator reference_generator data_recorder youbot_visualizer optitrack_drift ${PROJECT_NAME}_nodelets ${PROJECT_NAME}_gui
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION})
@@ -114,7 +105,7 @@ install(TARGETS state_estimator simulator reference_generator data_recorder youb
 #
 # Install nodes
 #
-install(TARGETS state_estimator_node simulator_node reference_generator_node data_recorder_node youbot_visualizer_node optitrack_drift_node
+install(TARGETS simulator_node reference_generator_node data_recorder_node youbot_visualizer_node optitrack_drift_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #
