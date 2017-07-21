@@ -41,9 +41,18 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "reference_generator", ros::init_options::NoRosout);
   ros::NodeHandle nh("");
   ros::NodeHandle nh_local("~");
-  ReferenceGenerator rg(nh, nh_local);
 
-  ros::spin();
+  try {
+    ROS_INFO("[Reference Generator]: Initializing node");
+    ReferenceGenerator rg(nh, nh_local);
+    ros::spin();
+  }
+  catch (const char* s) {
+    ROS_FATAL_STREAM("[Reference Generator]: " << s);
+  }
+  catch (...) {
+    ROS_FATAL_STREAM("[Reference Generator]: Unexpected error");
+  }
 
   return 0;
 }

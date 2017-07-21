@@ -18,11 +18,11 @@
   <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_rear_scanner" args="-0.246 0 0 3.141592 0 0 $(arg robot_frame) $(arg rear_scanner_frame)"/>
 
 
-  <node name="reference_generator" pkg="robor_utilities" type="reference_generator_node">
+  <node name="reference_generator" pkg="nodelet" type="nodelet" args="load robor_utilities/ReferenceGenerator $(arg nodelet_manager)">
     <param name="active"                 value="true"/>
     <param name="loop_rate"              value="$(arg loop_rate)"/>
 
-    <param name="parent_frame_id"        value="$(arg odom_frame)"/>
+    <param name="parent_frame_id"        value="$(arg map_frame)"/>
     <param name="child_frame_id"         value="$(arg reference_frame)"/>
 
     <param name="continuous_angle"       value="false"/>

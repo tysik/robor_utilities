@@ -319,22 +319,22 @@ void ReferenceGeneratorPanel::setParams() {
 }
 
 void ReferenceGeneratorPanel::getParams() {
-  nh_local_.param<bool>("active", p_active_, false);
-  nh_local_.param<bool>("continuous_angle", p_continuous_angle_, true);
-  nh_local_.param<bool>("trajectory_paused", p_paused_, true);
-  nh_local_.param<bool>("trajectory_stopped", p_stopped_, false);
+  p_active_ = nh_local_.param("active", false);
+  p_continuous_angle_ = nh_local_.param("continuous_angle", false);
+  p_paused_ = nh_local_.param("trajectory_paused", false);
+  p_stopped_ = nh_local_.param("trajectory_stopped", false);
 
-  nh_local_.param<int>("trajectory_type", p_trajectory_type_, 0);
+  p_trajectory_type_ = nh_local_.param("trajectory_type", 0);
 
-  nh_local_.param<double>("initial_x", p_x_0_, 0.0);
-  nh_local_.param<double>("initial_y", p_y_0_, 0.0);
-  nh_local_.param<double>("initial_theta", p_theta_0_, 0.0);
-  nh_local_.param<double>("linear_velocity", p_v_, 0.0);
-  nh_local_.param<double>("harmonic_period", p_T_, 0.0);
-  nh_local_.param<double>("harmonic_radius_x", p_r_x_, 0.0);
-  nh_local_.param<double>("harmonic_radius_y", p_r_y_, 0.0);
-  nh_local_.param<double>("harmonic_multiplier_x", p_n_x_, 1.0);
-  nh_local_.param<double>("harmonic_multiplier_y", p_n_y_, 1.0);
+  p_x_0_ = nh_local_.param("initial_x", 0.0);
+  p_y_0_ = nh_local_.param("initial_y", 0.0);
+  p_theta_0_ = nh_local_.param("initial_theta", 0.0);
+  p_v_ = nh_local_.param("linear_velocity", 0.0);
+  p_T_ = nh_local_.param("harmonic_period", 0.0);
+  p_r_x_ = nh_local_.param("harmonic_radius_x", 0.0);
+  p_r_y_ = nh_local_.param("harmonic_radius_y", 0.0);
+  p_n_x_ = nh_local_.param("harmonic_multiplier_x", 0.0);
+  p_n_y_ = nh_local_.param("harmonic_multiplier_y", 0.0);
 }
 
 void ReferenceGeneratorPanel::evaluateParams() {

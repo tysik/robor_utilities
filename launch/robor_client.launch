@@ -22,6 +22,7 @@
   <machine name="usr_pc" user="$(env USER)" address="yb_$(env USER)" env-loader="$(find robor_utilities)/scripts/user_env.sh"/>
   <machine name="yb_pc"  user="youbot"      address="yb_pc" env-loader="/home/youbot/robor_ws/src/robor_utilities/scripts/youbot_env.sh"/>
 
+
   <node name="joy" pkg="joy" type="joy_node" machine="usr_pc">
     <param name="dev" type="string" value="/dev/input/js0"/>
     <param name="deadzone"          value="0.08"/>

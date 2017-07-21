@@ -48,19 +48,41 @@ ReferenceGenerator::ReferenceGenerator(ros::NodeHandle& nh, ros::NodeHandle& nh_
 
 ReferenceGenerator::~ReferenceGenerator() {
   delete trajectory_;
+
+  nh_local_.deleteParam("active");
+  nh_local_.deleteParam("continuous_angle");
+  nh_local_.deleteParam("trajectory_paused");
+  nh_local_.deleteParam("trajectory_stopped");
+
+  nh_local_.deleteParam("loop_rate");
+
+  nh_local_.deleteParam("parent_frame_id");
+  nh_local_.deleteParam("child_frame_id");
+
+  nh_local_.deleteParam("trajectory_type");
+
+  nh_local_.deleteParam("initial_x");
+  nh_local_.deleteParam("initial_y");
+  nh_local_.deleteParam("initial_theta");
+
+  nh_local_.deleteParam("linear_velocity");
+  nh_local_.deleteParam("harmonic_period");
+  nh_local_.deleteParam("harmonic_radius_x");
+  nh_local_.deleteParam("harmonic_radius_y");
+  nh_local_.deleteParam("harmonic_multiplier_x");
+  nh_local_.deleteParam("harmonic_multiplier_y");
 }
 
 bool ReferenceGenerator::updateParams(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res) {
   bool prev_active = p_active_;
 
   nh_local_.param<bool>("active", p_active_, false);
-
-  nh_local_.param<double>("loop_rate", p_loop_rate_, 100.0);
-  p_sampling_time_ = 1.0 / p_loop_rate_;
-
   nh_local_.param<bool>("continuous_angle", p_continuous_angle_, true);
   nh_local_.param<bool>("trajectory_paused", p_paused_, true);
   nh_local_.param<bool>("trajectory_stopped", p_stopped_, false);
+
+  nh_local_.param<double>("loop_rate", p_loop_rate_, 100.0);
+  p_sampling_time_ = 1.0 / p_loop_rate_;
 
   nh_local_.param<string>("parent_frame_id", p_parent_frame_id_, "odom");
   nh_local_.param<string>("child_frame_id", p_child_frame_id_, "reference");
@@ -70,6 +92,7 @@ bool ReferenceGenerator::updateParams(std_srvs::Empty::Request& req, std_srvs::E
   nh_local_.param<double>("initial_x", p_x_0_, 0.0);
   nh_local_.param<double>("initial_y", p_y_0_, 0.0);
   nh_local_.param<double>("initial_theta", p_theta_0_, 0.0);
+
   nh_local_.param<double>("linear_velocity", p_v_, 0.1);
   nh_local_.param<double>("harmonic_period", p_T_, 5.0);
   nh_local_.param<double>("harmonic_radius_x", p_r_x_, 1.0);
