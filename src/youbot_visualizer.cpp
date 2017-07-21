@@ -46,15 +46,20 @@ YoubotVisualizer::YoubotVisualizer(ros::NodeHandle& nh, ros::NodeHandle& nh_loca
   initialize();
 }
 
+YoubotVisualizer::~YoubotVisualizer() {
+  nh_local_.deleteParam("active");
+  nh_local_.deleteParam("emit_yb_marker");
+  nh_local_.deleteParam("loop_rate");
+  nh_local_.deleteParam("frame_id");
+}
+
 bool YoubotVisualizer::updateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res) {
   bool prev_active = p_active_;
 
-  nh_local_.param<bool>("active", p_active_, false);
+  nh_local_.param<bool>("active", p_active_, true);
   nh_local_.param<bool>("emit_yb_marker", p_emit_yb_marker_, false);
-
   nh_local_.param<double>("loop_rate", p_loop_rate_, 25.0);
-
-  nh_local_.param<string>("frame_id", p_frame_id_, "base");
+  nh_local_.param<string>("frame_id", p_frame_id_, "robot");
 
   timer_.setPeriod(ros::Duration(1.0 / p_loop_rate_), false);
 

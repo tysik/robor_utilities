@@ -41,9 +41,18 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "youbot_visualizer", ros::init_options::NoRosout);
   ros::NodeHandle nh("");
   ros::NodeHandle nh_local("~");
-  YoubotVisualizer yv(nh, nh_local);
 
-  ros::spin();
+  try {
+    ROS_INFO("[Youbot Visualizer]: Initializing node");
+    YoubotVisualizer yv(nh, nh_local);
+    ros::spin();
+  }
+  catch (const char* s) {
+    ROS_FATAL_STREAM("[Youbot Visualizer]: " << s);
+  }
+  catch (...) {
+    ROS_FATAL_STREAM("[Youbot Visualizer]: Unexpected error");
+  }
 
   return 0;
 }

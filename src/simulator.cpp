@@ -46,6 +46,23 @@ Simulator::Simulator(ros::NodeHandle& nh, ros::NodeHandle& nh_local) : nh_(nh), 
   initialize();
 }
 
+Simulator::~Simulator() {
+  nh_local_.deleteParam("active");
+  nh_local_.deleteParam("continuous_angle");
+
+  nh_local_.deleteParam("loop_rate");
+
+  nh_local_.deleteParam("init_x");
+  nh_local_.deleteParam("init_y");
+  nh_local_.deleteParam("init_theta");
+
+  nh_local_.deleteParam("time_constant");
+  nh_local_.deleteParam("time_delay");
+
+  nh_local_.deleteParam("parent_frame_id");
+  nh_local_.deleteParam("child_frame_id");
+}
+
 bool Simulator::updateParams(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res) {
   nh_local_.param<bool>("active", p_active_, false);
   nh_local_.param<bool>("continuous_angle", p_continuous_angle_, true);

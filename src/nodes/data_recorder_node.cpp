@@ -41,9 +41,18 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "data_recorder", ros::init_options::NoRosout);
   ros::NodeHandle nh("");
   ros::NodeHandle nh_local("~");
-  DataRecorder dr(nh, nh_local);
 
-  ros::spin();
+  try {
+    ROS_INFO("[Data Recorder]: Initializing node");
+    DataRecorder dr(nh, nh_local);
+    ros::spin();
+  }
+  catch (const char* s) {
+    ROS_FATAL_STREAM("[Data Recorder]: " << s);
+  }
+  catch (...) {
+    ROS_FATAL_STREAM("[Data Recorder]: Unexpected error");
+  }
 
   return 0;
 }

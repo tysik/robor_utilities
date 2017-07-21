@@ -50,6 +50,15 @@ DataRecorder::DataRecorder(ros::NodeHandle& nh, ros::NodeHandle& nh_local) : nh_
 DataRecorder::~DataRecorder() {
   if (p_recording_)
     stop();
+
+  nh_local_.deleteParam("active");
+  nh_local_.deleteParam("recording");
+  nh_local_.deleteParam("record_pose");
+  nh_local_.deleteParam("record_reference_pose");
+  nh_local_.deleteParam("record_velocity");
+  nh_local_.deleteParam("record_reference_velocity");
+  nh_local_.deleteParam("record_controls");
+  nh_local_.deleteParam("loop_rate");
 }
 
 bool DataRecorder::updateParams(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res) {

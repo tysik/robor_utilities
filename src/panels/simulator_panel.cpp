@@ -133,6 +133,7 @@ void SimulatorPanel::verifyInputs() {
 void SimulatorPanel::setParams() {
   nh_local_.setParam("active", p_active_);
   nh_local_.setParam("continuous_angle", p_continuous_angle_);
+
   nh_local_.setParam("time_constant", p_time_constant_);
   nh_local_.setParam("time_delay", p_time_delay_);
 
@@ -142,14 +143,15 @@ void SimulatorPanel::setParams() {
 }
 
 void SimulatorPanel::getParams() {
-  nh_local_.param<bool>("active", p_active_, false);
-  nh_local_.param<bool>("continuous_angle", p_continuous_angle_, true);
-  nh_local_.param<double>("time_constant", p_time_constant_, 0.0);
-  nh_local_.param<double>("time_delay", p_time_delay_, 0.0);
+  p_active_ = nh_local_.param("active", false);
+  p_continuous_angle_ = nh_local_.param("continuous_angle", false);
 
-  nh_local_.param<double>("init_x", p_init_x_, 0.0);
-  nh_local_.param<double>("init_y", p_init_y_, 0.0);
-  nh_local_.param<double>("init_theta", p_init_theta_, 0.0);
+  p_time_constant_ = nh_local_.param("time_constant", 0.0);
+  p_time_delay_ = nh_local_.param("time_delay", 0.0);
+
+  p_init_x_ = nh_local_.param("init_x", 0.0);
+  p_init_y_ = nh_local_.param("init_y", 0.0);
+  p_init_theta_ = nh_local_.param("init_theta", 0.0);
 }
 
 void SimulatorPanel::evaluateParams() {

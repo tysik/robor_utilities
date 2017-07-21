@@ -152,14 +152,14 @@ void DataRecorderPanel::setParams() {
 }
 
 void DataRecorderPanel::getParams() {
-  nh_local_.param<bool>("active", p_active_, false);
-  nh_local_.param<bool>("recording", p_recording_, false);
+  p_active_ = nh_local_.param("active", false);
+  p_recording_ = nh_local_.param("recording", false);
 
-  nh_local_.param<bool>("record_pose", p_record_pose_, true);
-  nh_local_.param<bool>("record_reference_pose", p_record_reference_pose_, true);
-  nh_local_.param<bool>("record_velocity", p_record_velocity_, true);
-  nh_local_.param<bool>("record_reference_velocity", p_record_reference_velocity_, true);
-  nh_local_.param<bool>("record_controls", p_record_controls_, true);
+  p_record_pose_ = nh_local_.param("record_pose", false);
+  p_record_reference_pose_ = nh_local_.param("record_reference_pose", false);
+  p_record_velocity_ = nh_local_.param("record_velocity", false);
+  p_record_reference_velocity_ = nh_local_.param("record_reference_velocity", false);
+  p_record_controls_ = nh_local_.param("record_controls", false);
 }
 
 void DataRecorderPanel::evaluateParams() {

@@ -47,6 +47,7 @@ class YoubotVisualizer
 {
 public:
   YoubotVisualizer(ros::NodeHandle& nh, ros::NodeHandle& nh_local);
+  ~YoubotVisualizer();
 
 private:
   bool updateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res);

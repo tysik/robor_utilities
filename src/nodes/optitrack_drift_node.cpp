@@ -41,9 +41,18 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "optitrack_drift", ros::init_options::NoRosout);
   ros::NodeHandle nh("");
   ros::NodeHandle nh_local("~");
-  OptitrackDrift od(nh, nh_local);
 
-  ros::spin();
+  try {
+    ROS_INFO("[Optitrack Drift]: Initializing node");
+    OptitrackDrift od(nh, nh_local);
+    ros::spin();
+  }
+  catch (const char* s) {
+    ROS_FATAL_STREAM("[Optitrack Drift]: " << s);
+  }
+  catch (...) {
+    ROS_FATAL_STREAM("[Optitrack Drift]: Unexpected error");
+  }
 
   return 0;
 }

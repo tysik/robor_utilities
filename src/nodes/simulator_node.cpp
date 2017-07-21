@@ -41,9 +41,18 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "simulator", ros::init_options::NoRosout);
   ros::NodeHandle nh("");
   ros::NodeHandle nh_local("~");
-  Simulator s(nh, nh_local);
 
-  ros::spin();
+  try {
+    ROS_INFO("[Simulator]: Initializing node");
+    Simulator s(nh, nh_local);
+    ros::spin();
+  }
+  catch (const char* s) {
+    ROS_FATAL_STREAM("[Simulator]: " << s);
+  }
+  catch (...) {
+    ROS_FATAL_STREAM("[Simulator]: Unexpected error");
+  }
 
   return 0;
 }

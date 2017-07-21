@@ -52,6 +52,7 @@ class Simulator
 {
 public:
   Simulator(ros::NodeHandle& nh, ros::NodeHandle& nh_local);
+  ~Simulator();
 
 private:
   bool updateParams(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res);

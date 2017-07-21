@@ -47,6 +47,7 @@ class OptitrackDrift
 {
 public:
   OptitrackDrift(ros::NodeHandle& nh, ros::NodeHandle& nh_local);
+  ~OptitrackDrift();
 
 private:
   bool updateParams(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res);

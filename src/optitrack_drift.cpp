@@ -46,6 +46,15 @@ OptitrackDrift::OptitrackDrift(ros::NodeHandle& nh, ros::NodeHandle& nh_local) :
   initialize();
 }
 
+OptitrackDrift::~OptitrackDrift() {
+  nh_local_.deleteParam("active");
+  nh_local_.deleteParam("loop_rate");
+  nh_local_.deleteParam("map_frame_id");
+  nh_local_.deleteParam("odom_frame_id");
+  nh_local_.deleteParam("robot_frame_id");
+  nh_local_.deleteParam("optitrack_frame_id");
+}
+
 bool OptitrackDrift::updateParams(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res) {
   nh_local_.param<bool>("active", p_active_, false);
 
@@ -88,8 +97,7 @@ void OptitrackDrift::timerCallback(const ros::TimerEvent& e) {
 
     tf_bc_.sendTransform(odom_in_map_msg);
   }
-  catch (tf::TransformException ex) {
-    ROS_WARN_STREAM(ex.what());
-    return;
+  catch (const std::exception& e) {
+    throw e.what();
   }
 }
