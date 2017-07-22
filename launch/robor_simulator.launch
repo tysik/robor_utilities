@@ -38,7 +38,7 @@
 
   <!-- Motion Controllers -->
   <node name="manual_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/ManualController nm">
-    <param name="active"        value="true"/>
+    <param name="active"        value="false"/>
     <param name="publish_ref_vel" value="false"/>
 
     <param name="use_keys"      value="false"/>
@@ -56,7 +56,7 @@
 
 
   <node name="feedback_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/FeedbackController nm">
-    <param name="active"       value="false"/>
+    <param name="active"       value="true"/>
     <param name="run"          value="false"/>
 
     <param name="use_ff"       value="true"/>
@@ -124,6 +124,7 @@
   <node name="obstacle_publisher" pkg="nodelet" type="nodelet" args="load obstacle_detector/ObstaclePublisher nm">
     <param name="active"           value="false"/>
     <param name="reset"            value="false"/>
+
     <param name="fusion_example"   value="false"/>
     <param name="fission_example"  value="false"/>
 
@@ -143,26 +144,29 @@
   <!-- Utilities -->
   <node name="reference_generator" pkg="nodelet" type="nodelet" args="load robor_utilities/ReferenceGenerator nm">
     <param name="active"                 value="true"/>
-    <param name="loop_rate"              value="$(arg loop_rate)"/>
-
-    <param name="parent_frame_id"        value="$(arg odom_frame)"/>
-    <param name="child_frame_id"         value="$(arg reference_frame)"/>
-
     <param name="continuous_angle"       value="false"/>
+    <param name="use_local_frame"        value="true"/>
+
     <param name="trajectory_paused"      value="false"/>
     <param name="trajectory_stopped"     value="false"/>
 
-    <param name="trajectory_type"        value="0"/>
+    <param name="loop_rate"              value="$(arg loop_rate)"/>
 
-    <param name="initial_x"              value="0.0"/>
-    <param name="initial_y"              value="0.0"/>
-    <param name="initial_theta"          value="0.0"/>
+    <param name="trajectory_type"        value="1"/>
+
+    <param name="initial_x"              value="2.0"/>
+    <param name="initial_y"              value="3.0"/>
+    <param name="initial_theta"          value="1.570796327"/>
+
     <param name="linear_velocity"        value="0.1"/>
     <param name="harmonic_period"        value="30.0"/>
     <param name="harmonic_radius_x"      value="1.0"/>
-    <param name="harmonic_radius_y"      value="0.5"/>
+    <param name="harmonic_radius_y"      value="1.0"/>
     <param name="harmonic_multiplier_x"  value="1.0"/>
-    <param name="harmonic_multiplier_y"  value="2.0"/>
+    <param name="harmonic_multiplier_y"  value="1.0"/>
+
+    <param name="parent_frame_id"        value="$(arg map_frame)"/>
+    <param name="child_frame_id"         value="$(arg reference_frame)"/>
   </node>
 
 
@@ -194,7 +198,7 @@
   </node>
 
 
-  <node name="map_to_odom" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame)"/>
+  <node name="map_to_odom" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg map_frame) $(arg odom_frame) 10"/>
 
 </launch>
 <!-- -->

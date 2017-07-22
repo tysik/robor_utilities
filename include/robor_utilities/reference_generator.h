@@ -70,20 +70,24 @@ private:
   ros::NodeHandle nh_local_;
 
   ros::ServiceServer params_srv_;
+
   ros::Timer timer_;
 
-  ros::Publisher odom_pub_;
+  ros::Publisher ref_twist_pub_;
+
   tf::TransformBroadcaster tf_bc_;
+
+  double time_;
+  Trajectory* trajectory_;
 
   geometry_msgs::Pose2D pose_;
   geometry_msgs::Twist velocity_;
 
-  Trajectory* trajectory_;
-  double time_;
-
   // Parameters
   bool p_active_;
   bool p_continuous_angle_;
+  bool p_use_local_frame_;
+
   bool p_paused_;
   bool p_stopped_;
 

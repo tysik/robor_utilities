@@ -51,6 +51,8 @@ ReferenceGenerator::~ReferenceGenerator() {
 
   nh_local_.deleteParam("active");
   nh_local_.deleteParam("continuous_angle");
+  nh_local_.deleteParam("use_local_frame");
+
   nh_local_.deleteParam("trajectory_paused");
   nh_local_.deleteParam("trajectory_stopped");
 
@@ -78,6 +80,8 @@ bool ReferenceGenerator::updateParams(std_srvs::Empty::Request& req, std_srvs::E
 
   nh_local_.param<bool>("active", p_active_, false);
   nh_local_.param<bool>("continuous_angle", p_continuous_angle_, true);
+  nh_local_.param<bool>("use_local_frame", p_use_local_frame_, true);
+
   nh_local_.param<bool>("trajectory_paused", p_paused_, true);
   nh_local_.param<bool>("trajectory_stopped", p_stopped_, false);
 
@@ -116,7 +120,7 @@ bool ReferenceGenerator::updateParams(std_srvs::Empty::Request& req, std_srvs::E
   timer_.setPeriod(ros::Duration(p_sampling_time_), false);
 
   if (p_active_) {
-    odom_pub_ = nh_.advertise<nav_msgs::Odometry>("reference_state", 5);
+    ref_twist_pub_ = nh_.advertise<geometry_msgs::Twist>("reference_twist", 10);
 
     if (!p_paused_ && !p_stopped_)
       start();
@@ -131,8 +135,7 @@ bool ReferenceGenerator::updateParams(std_srvs::Empty::Request& req, std_srvs::E
     if (prev_active)
       pause();
 
-    odom_pub_.shutdown();
-
+    ref_twist_pub_.shutdown();
     timer_.stop();
   }
 
@@ -174,6 +177,14 @@ void ReferenceGenerator::update(double dt) {
   pose_ = trajectory_->calculatePose(time_);
   velocity_ = trajectory_->calculateVelocity(time_);
 
+  if (p_use_local_frame_) {
+    double u =  velocity_.linear.x * cos(pose_.theta) + velocity_.linear.y * sin(pose_.theta);
+    double v = -velocity_.linear.x * sin(pose_.theta) + velocity_.linear.y * cos(pose_.theta);
+
+    velocity_.linear.x = u;
+    velocity_.linear.y = v;
+  }
+
   if (p_continuous_angle_ ) {
     double new_theta_aux = atan2(sin(pose_.theta), cos(pose_.theta));
     double theta_diff = new_theta_aux - prev_theta_aux;
@@ -188,36 +199,24 @@ void ReferenceGenerator::update(double dt) {
 }
 
 void ReferenceGenerator::publishAll() {
-  ros::Time now = ros::Time::now();
-
-  geometry_msgs::Quaternion rotation = tf::createQuaternionMsgFromYaw(pose_.theta);
-
   geometry_msgs::TransformStamped odom_tf;
 
-  odom_tf.header.stamp = now;
+  odom_tf.header.stamp = ros::Time::now();
   odom_tf.header.frame_id = p_parent_frame_id_;
   odom_tf.child_frame_id = p_child_frame_id_;
 
   odom_tf.transform.translation.x = pose_.x;
   odom_tf.transform.translation.y = pose_.y;
   odom_tf.transform.translation.z = 0.0;
-  odom_tf.transform.rotation = rotation;
-
-  nav_msgs::OdometryPtr odom_msg(new nav_msgs::Odometry);
-
-  odom_msg->header.stamp = now;
-  odom_msg->header.frame_id = p_parent_frame_id_;
-  odom_msg->child_frame_id = p_child_frame_id_;
-
-  odom_msg->pose.pose.position.x = pose_.x;
-  odom_msg->pose.pose.position.y = pose_.y;
-  odom_msg->pose.pose.position.z = 0.0;
-  odom_msg->pose.pose.orientation = rotation;
-
-  odom_msg->twist.twist.linear.x = velocity_.linear.x;
-  odom_msg->twist.twist.linear.y = velocity_.linear.y;
-  odom_msg->twist.twist.angular.z = velocity_.angular.z;
+  odom_tf.transform.rotation = tf::createQuaternionMsgFromYaw(pose_.theta);
 
   tf_bc_.sendTransform(odom_tf);
-  odom_pub_.publish(odom_msg);
+
+  geometry_msgs::TwistPtr twist_msg(new geometry_msgs::Twist);
+
+  twist_msg->linear.x = velocity_.linear.x;
+  twist_msg->linear.y = velocity_.linear.y;
+  twist_msg->angular.z = velocity_.angular.z;
+
+  ref_twist_pub_.publish(twist_msg);
 }
