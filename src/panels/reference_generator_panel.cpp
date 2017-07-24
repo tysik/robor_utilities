@@ -43,6 +43,7 @@ ReferenceGeneratorPanel::ReferenceGeneratorPanel(QWidget* parent) : rviz::Panel(
 
   activate_checkbox_         = new QCheckBox("On/Off");
   continuous_angle_checkbox_ = new QCheckBox("Continuous angle");
+  local_frame_checkbox_      = new QCheckBox("Use local frame");
   stop_button_               = new QPushButton();
   pause_button_              = new QPushButton();
   play_button_               = new QPushButton();
@@ -79,6 +80,10 @@ ReferenceGeneratorPanel::ReferenceGeneratorPanel(QWidget* parent) : rviz::Panel(
   }
 
   QSpacerItem* margin = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  QHBoxLayout* checks_layout = new QHBoxLayout;
+  checks_layout->addWidget(continuous_angle_checkbox_);
+  checks_layout->addWidget(local_frame_checkbox_);
 
   QHBoxLayout* buttons_layout = new QHBoxLayout;
   buttons_layout->addSpacerItem(margin);
@@ -151,7 +156,7 @@ ReferenceGeneratorPanel::ReferenceGeneratorPanel(QWidget* parent) : rviz::Panel(
   QVBoxLayout* layout = new QVBoxLayout;
   layout->addWidget(activate_checkbox_);
   layout->addWidget(lines[0]);
-  layout->addWidget(continuous_angle_checkbox_);
+  layout->addLayout(checks_layout);
   layout->addWidget(lines[1]);
   layout->addLayout(buttons_layout);
   layout->addWidget(lines[2]);
@@ -163,6 +168,7 @@ ReferenceGeneratorPanel::ReferenceGeneratorPanel(QWidget* parent) : rviz::Panel(
 
   connect(activate_checkbox_, SIGNAL(clicked()), this, SLOT(processInputs()));
   connect(continuous_angle_checkbox_, SIGNAL(clicked()), this, SLOT(processInputs()));
+  connect(local_frame_checkbox_, SIGNAL(clicked()), this, SLOT(processInputs()));
   connect(stop_button_, SIGNAL(clicked()), this, SLOT(stop()));
   connect(pause_button_, SIGNAL(clicked()), this, SLOT(pause()));
   connect(play_button_, SIGNAL(clicked()), this, SLOT(start()));
@@ -268,6 +274,7 @@ void ReferenceGeneratorPanel::activateTrajectoryParams(int index) {
 void ReferenceGeneratorPanel::verifyInputs() {
   p_active_ = activate_checkbox_->isChecked();
   p_continuous_angle_ = continuous_angle_checkbox_->isChecked();
+  p_use_local_frame_ = local_frame_checkbox_->isChecked();
 
   p_trajectory_type_ = trajectories_list_->currentIndex();
 
@@ -302,6 +309,8 @@ void ReferenceGeneratorPanel::verifyInputs() {
 void ReferenceGeneratorPanel::setParams() {
   nh_local_.setParam("active", p_active_);
   nh_local_.setParam("continuous_angle", p_continuous_angle_);
+  nh_local_.setParam("use_local_frame", p_use_local_frame_);
+
   nh_local_.setParam("trajectory_paused", p_paused_);
   nh_local_.setParam("trajectory_stopped", p_stopped_);
 
@@ -321,6 +330,8 @@ void ReferenceGeneratorPanel::setParams() {
 void ReferenceGeneratorPanel::getParams() {
   p_active_ = nh_local_.param("active", false);
   p_continuous_angle_ = nh_local_.param("continuous_angle", false);
+  p_use_local_frame_ = nh_local_.param("use_local_frame", false);
+
   p_paused_ = nh_local_.param("trajectory_paused", false);
   p_stopped_ = nh_local_.param("trajectory_stopped", false);
 
@@ -347,6 +358,9 @@ void ReferenceGeneratorPanel::evaluateParams() {
 
   continuous_angle_checkbox_->setEnabled(p_active_);
   continuous_angle_checkbox_->setChecked(p_continuous_angle_);
+
+  local_frame_checkbox_->setEnabled(p_active_);
+  local_frame_checkbox_->setChecked(p_use_local_frame_);
 
   stop_button_->setEnabled(p_active_ && !p_stopped_);
   stop_button_->setChecked(p_stopped_ && !p_paused_);

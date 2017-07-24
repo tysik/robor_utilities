@@ -80,6 +80,7 @@ private:
 private:
   QCheckBox* activate_checkbox_;
   QCheckBox* continuous_angle_checkbox_;
+  QCheckBox* local_frame_checkbox_;
 
   QPushButton* stop_button_;
   QPushButton* pause_button_;
@@ -105,6 +106,8 @@ private:
   // Parameters
   bool p_active_;
   bool p_continuous_angle_;
+  bool p_use_local_frame_;
+
   bool p_paused_;
   bool p_stopped_;
 

@@ -16,31 +16,25 @@
 
   <node name="manual_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/ManualController $(arg nodelet_manager)">
     <param name="active"        value="true"/>
-    <param name="publish_ref_vel" value="false"/>
+    <param name="publish_reference_twist" value="false"/>
 
     <param name="use_keys"      value="false"/>
-    <param name="use_joy"       value="true"/>
+    <param name="use_joy"       value="false"/>
 
-    <param name="loop_rate"     value="$(arg loop_rate)"/>
-    <param name="time_constant" value="0.1"/>
+    <param name="loop_rate"     value="100.0"/>
+    <param name="time_constant" value="0.0"/>
 
     <param name="linear_gain"   value="0.3"/>
     <param name="angular_gain"  value="0.5"/>
-
-    <param name="parent_frame_id" value="$(arg odom_frame)"/>
-    <param name="child_frame_id"  value="$(arg reference_frame)"/>
-
-    <remap from="robot_state" to="odom"/>
   </node>
 
 
   <node name="feedback_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/FeedbackController $(arg nodelet_manager)">
-    <param name="active"       value="false"/>
+    <param name="active"       value="true"/>
     <param name="run"          value="false"/>
-
     <param name="use_ff"       value="true"/>
 
-    <param name="loop_rate"    value="$(arg loop_rate)"/>
+    <param name="loop_rate"    value="100.0"/>
 
     <param name="gain_x"       value="0.5"/>
     <param name="gain_y"       value="0.5"/>
@@ -50,7 +44,33 @@
     <param name="max_v"        value="0.5"/>
     <param name="max_w"        value="3.0"/>
 
-    <remap from="robot_state" to="odom"/>
+    <param name="robot_frame_id" value="$(arg robot_frame)"/>
+    <param name="reference_frame_id" value="$(arg reference_frame)"/>
+  </node>
+
+
+  <node name="potentials_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/PotentialsController $(arg nodelet_manager)">
+    <param name="active"       value="true"/>
+    <param name="run"          value="false"/>
+    <param name="assisted_control" value="false"/>
+
+    <param name="loop_rate"     value="$(arg loop_rate)"/>
+
+    <param name="R"            value="0.5"/>
+    <param name="eta"          value="1.2"/>
+    <param name="delta"        value="0.2"/>
+    <param name="ko_velocity"  value="0.15"/>
+
+    <param name="gain_pose"    value="0.4"/>
+    <param name="gain_theta"   value="3.0"/>
+
+    <param name="max_u"        value="0.4"/>
+    <param name="max_v"        value="0.4"/>
+    <param name="max_w"        value="3.0"/>
+
+    <param name="fixed_frame_id"     value="$(arg map_frame)"/>
+    <param name="robot_frame_id"     value="$(arg robot_frame)"/>
+    <param name="reference_frame_id" value="$(arg reference_frame)"/>
   </node>
 
 
@@ -79,31 +99,6 @@
     <param name="max_u"        value="0.4"/>
     <param name="max_v"        value="0.4"/>
     <param name="max_w"        value="2.7"/>
-
-    <remap from="robot_state" to="odom"/>
-  </node>
-
-
-  <node name="potentials_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/PotentialsController $(arg nodelet_manager)">
-    <param name="active"       value="false"/>
-    <param name="run"          value="false"/>
-    <param name="assisted_control" value="false"/>
-
-    <param name="loop_rate"     value="$(arg loop_rate)"/>
-
-    <param name="R"            value="0.5"/>
-    <param name="eta"          value="1.2"/>
-    <param name="delta"        value="0.2"/>
-    <param name="ko_velocity"  value="0.15"/>
-
-    <param name="gain_pose"    value="0.4"/>
-    <param name="gain_theta"   value="3.0"/>
-
-    <param name="max_u"        value="0.4"/>
-    <param name="max_v"        value="0.4"/>
-    <param name="max_w"        value="3.0"/>
-
-    <remap from="robot_state" to="odom"/>
   </node>
 
 </launch>

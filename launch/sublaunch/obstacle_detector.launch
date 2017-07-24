@@ -24,8 +24,8 @@
 
     <param name="ranges_num"        value="1000"/>
 
-    <param name="min_scanner_range" value="0.1"/>
-    <param name="max_scanner_range" value="5.0"/>
+    <param name="min_scanner_range" value="0.15"/>
+    <param name="max_scanner_range" value="5.5"/>
 
     <param name="min_x_range"       value="-10.0"/>
     <param name="max_x_range"       value="10.0"/>
@@ -43,6 +43,7 @@
     <param name="use_pcl"              value="true"/>
 
     <param name="use_split_and_merge"        value="true"/>
+    <param name="circles_from_visibles"      value="true"/>
     <param name="discard_converted_segments" value="true"/>
     <param name="transform_coordinates"      value="true"/>
 
@@ -76,6 +77,7 @@
   <node name="obstacle_publisher" pkg="obstacle_detector" type="obstacle_publisher_node">
     <param name="active"           value="false"/>
     <param name="reset"            value="false"/>
+
     <param name="fusion_example"   value="false"/>
     <param name="fission_example"  value="false"/>
 
