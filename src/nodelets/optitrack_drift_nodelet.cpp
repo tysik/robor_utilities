@@ -60,6 +60,10 @@ public:
     }
   }
 
+  virtual ~OptitrackDriftNodelet() {
+    NODELET_INFO("[Optitrack Drift]: Shutdown");
+  }
+
 private:
   std::shared_ptr<OptitrackDrift> optitrack_drift_;
 };

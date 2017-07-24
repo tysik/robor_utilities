@@ -60,6 +60,10 @@ public:
     }
   }
 
+  virtual ~SimulatorNodelet() {
+    NODELET_INFO("[Simulator]: Shutdown");
+  }
+
 private:
   std::shared_ptr<Simulator> simulator_;
 };

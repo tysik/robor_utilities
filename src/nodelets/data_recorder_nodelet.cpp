@@ -60,6 +60,10 @@ public:
     }
   }
 
+  virtual ~DataRecorderNodelet() {
+    NODELET_INFO("[Data Recorder]: Shutdown");
+  }
+
 private:
   std::shared_ptr<DataRecorder> data_recorder_;
 };

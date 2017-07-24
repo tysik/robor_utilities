@@ -60,6 +60,10 @@ public:
     }
   }
 
+  virtual ~YoubotVisualizerNodelet() {
+    NODELET_INFO("[Youbot Visualizer]: Shutdown");
+  }
+
 private:
   std::shared_ptr<YoubotVisualizer> youbot_visualizer_;
 };

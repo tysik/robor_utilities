@@ -60,6 +60,10 @@ public:
     }
   }
 
+  virtual ~ReferenceGeneratorNodelet() {
+    NODELET_INFO("[Reference Generator]: Shutdown");
+  }
+
 private:
   std::shared_ptr<ReferenceGenerator> reference_generator_;
 };
