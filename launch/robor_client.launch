@@ -55,7 +55,7 @@
       <param name="optitrack_config/multicast_address" value="239.255.42.99"/>
     </node>
 
-    <node pkg="robor_utilities" type="optitrack_drift_node" name="optitrack_drift" machine="yb_pc">
+    <node pkg="robor_utilities" type="optitrack_drift_node" name="optitrack_drift" machine="usr_pc" output="screen">
       <param name="active"             value="true"/>
       <param name="loop_rate"          value="$(arg loop_rate)"/>
 

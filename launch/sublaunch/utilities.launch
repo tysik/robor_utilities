@@ -14,7 +14,7 @@
   <arg name="rear_scanner_frame"/>
 
 
-  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_front_scanner" args="0.223 0 0 0 0 0 $(arg robot_frame) $(arg front_scanner_frame)"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_front_scanner" args="0.2205 0 0 0 0 0 $(arg robot_frame) $(arg front_scanner_frame)"/>
   <node pkg="tf2_ros" type="static_transform_publisher" name="robot_to_rear_scanner" args="-0.246 0 0 3.141592 0 0 $(arg robot_frame) $(arg rear_scanner_frame)"/>
 
 
@@ -37,9 +37,9 @@
     <param name="linear_velocity"        value="0.1"/>
     <param name="harmonic_period"        value="30.0"/>
     <param name="harmonic_radius_x"      value="1.0"/>
-    <param name="harmonic_radius_y"      value="0.5"/>
+    <param name="harmonic_radius_y"      value="1.0"/>
     <param name="harmonic_multiplier_x"  value="1.0"/>
-    <param name="harmonic_multiplier_y"  value="2.0"/>
+    <param name="harmonic_multiplier_y"  value="1.0"/>
 
     <param name="parent_frame_id"        value="$(arg map_frame)"/>
     <param name="child_frame_id"         value="$(arg reference_frame)"/>
