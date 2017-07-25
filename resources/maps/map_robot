@@ -1,0 +1,15 @@
+MAP ROBOT
+At time 1501006220.567
+- Translation: [0.070, 2.522, 0.000]
+- Rotation: in Quaternion [0.000, 0.000, 0.961, 0.278]
+            in RPY (radian) [0.000, -0.000, 2.578]
+            in RPY (degree) [0.000, -0.000, 147.735]
+
+
+ROBOT MAP (CORRECT YAW)
+At time 1501006251.163
+- Translation: [-1.287, 2.170, 0.000]
+- Rotation: in Quaternion [0.000, 0.000, 0.961, -0.278]
+            in RPY (radian) [0.000, 0.000, -2.578]
+            in RPY (degree) [0.000, 0.000, -147.735]
+

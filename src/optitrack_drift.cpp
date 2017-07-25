@@ -77,27 +77,33 @@ bool OptitrackDrift::updateParams(std_srvs::Empty::Request& req, std_srvs::Empty
 }
 
 void OptitrackDrift::timerCallback(const ros::TimerEvent& e) {
+  ros::Time now = ros::Time::now();
+
+  // We assume that optitrack and robot are the same frames (we have two sources of them)
+  tf::StampedTransform opti_in_map;
+  tf::StampedTransform robot_in_odom;
+
   try {
-    ros::Time now = ros::Time::now();
-
-    // We assume that optitrack and robot are the same frames (we have two sources of them)
-    tf::StampedTransform opti_in_map;
-    tf_ls_.waitForTransform(p_map_frame_id_, p_optitrack_frame_id_, now, ros::Duration(10.0));
+    tf_ls_.waitForTransform(p_map_frame_id_, p_optitrack_frame_id_, now, ros::Duration(1.0));
     tf_ls_.lookupTransform(p_map_frame_id_, p_optitrack_frame_id_, now, opti_in_map);
+  }
+  catch (tf::TransformException& e) {
+    opti_in_map.setIdentity();
+  }
 
-    tf::StampedTransform robot_in_odom;
-    tf_ls_.waitForTransform(p_odom_frame_id_, p_robot_frame_id_, now, ros::Duration(10.0));
+  try {
+    tf_ls_.waitForTransform(p_odom_frame_id_, p_robot_frame_id_, now, ros::Duration(1.0));
     tf_ls_.lookupTransform(p_odom_frame_id_, p_robot_frame_id_, now, robot_in_odom);
-
-    tf::Transform odom_in_map = opti_in_map * robot_in_odom.inverse();
-    tf::StampedTransform odom_in_map_s(odom_in_map, now, p_map_frame_id_, p_odom_frame_id_);
-
-    geometry_msgs::TransformStamped odom_in_map_msg;
-    tf::transformStampedTFToMsg(odom_in_map_s, odom_in_map_msg);
-
-    tf_bc_.sendTransform(odom_in_map_msg);
   }
-  catch (const std::exception& e) {
-    throw e.what();
+  catch (tf::TransformException& e) {
+    robot_in_odom.setIdentity();
   }
+
+  tf::Transform odom_in_map = opti_in_map * robot_in_odom.inverse();
+  tf::StampedTransform odom_in_map_s(odom_in_map, now, p_map_frame_id_, p_odom_frame_id_);
+
+  geometry_msgs::TransformStamped odom_in_map_msg;
+  tf::transformStampedTFToMsg(odom_in_map_s, odom_in_map_msg);
+
+  tf_bc_.sendTransform(odom_in_map_msg);
 }

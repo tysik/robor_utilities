@@ -48,6 +48,8 @@
 
 
   <group if="$(arg use_optitrack)">
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/map.yaml" machine="usr_pc"/>
+
     <node pkg="mocap_optitrack" type="mocap_node" name="mocap_node" machine="usr_pc">
       <param name="rigid_bodies/1/child_frame_id"      value="$(arg optitrack_frame)"/>
       <param name="rigid_bodies/1/parent_frame_id"     value="$(arg map_frame)"/>
@@ -55,7 +57,7 @@
       <param name="optitrack_config/multicast_address" value="239.255.42.99"/>
     </node>
 
-    <node pkg="robor_utilities" type="optitrack_drift_node" name="optitrack_drift" machine="usr_pc" output="screen">
+    <node pkg="robor_utilities" type="optitrack_drift_node" name="optitrack_drift" machine="usr_pc">
       <param name="active"             value="true"/>
       <param name="loop_rate"          value="$(arg loop_rate)"/>
 
@@ -68,20 +70,23 @@
 
 
   <group if="$(arg use_map)">
-    <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/odometry_map/map.yaml" machine="usr_pc"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find robor_utilities)/resources/maps/map.yaml" machine="usr_pc"/>
 
-    <node pkg="amcl" type="amcl" name="amcl" machine="yb_pc">
+    <node pkg="amcl" type="amcl" name="amcl" machine="yb_pc" output="screen">
       <param name="tf_broadcast" value="true"/>
 
       <param name="global_frame_id" value="$(arg map_frame)"/>
       <param name="odom_frame_id" value="$(arg odom_frame)"/>
       <param name="base_frame_id" value="$(arg robot_frame)"/>
 
+      <!--
       <param name="laser_min_range" value="-1.0"/>
       <param name="laser_max_range" value="-1.0"/>
       <param name="laser_max_beams" value="100.0"/>
+      -->
 
       <param name="odom_model_type" value="omni"/>
+      <!--
       <param name="odom_alpha1" value="0.2"/>
       <param name="odom_alpha2" value="0.2"/>
       <param name="odom_alpha3" value="0.2"/>
@@ -91,6 +96,7 @@
       <param name="update_min_d" value="0.2"/>
       <param name="update_min_a" value="0.5"/>
       <param name="resample_interval" value="2"/>
+      -->
 
       <param name="initial_pose_x" value="0.0"/>
       <param name="initial_pose_y" value="0.0"/>
@@ -99,13 +105,13 @@
       <param name="initial_cov_xx" value="0.2"/>
       <param name="initial_cov_yy" value="0.2"/>
       <param name="initial_cov_aa" value="0.02"/>
-
+      <!--
+      <param name="use_map_topic" value="false"/>
+      -->
       <param name="min_particles" value="500"/>
       <param name="max_particles" value="2000"/>
 
-      <param name="use_map_topic" value="false"/>
-
-      <!--<remap from="scan" to="front_scan"/>-->
+      <remap from="scan" to="front_scan"/>
     </node>
   </group>
 
@@ -114,10 +120,10 @@
     <param name="robot_id" value="1"/>
     <param name="scan_input_topic" value="karto_in"/>
     <param name="scan_output_topic" value="karto_out"/>
-    <param name="laser_topic" value="front_scan"/>
+    <param name="laser_topic" value="scan"/>
     <param name="map_topic" value="map"/>
 
-    <param name="laser_frame" value="$(arg front_scanner_frame)"/>
+    <param name="laser_frame" value="$(arg robot_frame)"/>
     <param name="robot_frame" value="$(arg robot_frame)"/>
     <param name="odometry_frame" value="$(arg odom_frame)"/>
     <param name="offset_frame" value="offset"/>
@@ -140,8 +146,6 @@
       <param name="MinimumTravelDistance" value="1.0"/>
       <param name="MinimumTravelHeading" value="0.52"/>
       <param name="LoopSearchMaximumDistance" value="10.0"/>
-
-      <!--<remap from="scan" to="front_scan"/>-->
     </node>
   </group>
 

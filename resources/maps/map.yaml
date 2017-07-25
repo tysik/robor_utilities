@@ -1,6 +1,7 @@
 image: map.pgm
 resolution: 0.050000
-origin: [-11.770633, -8.179773, 0.0]
+#origin: [-9.818275, -8.400045, 0.0] # original values
+origin: [2.64, 14.5, -2.578]
 negate: 0
 occupied_thresh: 0.65
 free_thresh: 0.196
