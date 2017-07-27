@@ -19,7 +19,7 @@
     <param name="publish_reference_twist" value="false"/>
 
     <param name="use_keys"      value="false"/>
-    <param name="use_joy"       value="false"/>
+    <param name="use_joy"       value="true"/>
 
     <param name="loop_rate"     value="100.0"/>
     <param name="time_constant" value="0.1"/>
@@ -30,7 +30,7 @@
 
 
   <node name="feedback_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/FeedbackController $(arg nodelet_manager)">
-    <param name="active"       value="true"/>
+    <param name="active"       value="false"/>
     <param name="run"          value="false"/>
     <param name="use_ff"       value="true"/>
 
@@ -50,7 +50,7 @@
 
 
   <node name="potentials_controller" pkg="nodelet" type="nodelet" args="load robor_controllers/PotentialsController $(arg nodelet_manager)">
-    <param name="active"       value="true"/>
+    <param name="active"       value="false"/>
     <param name="run"          value="false"/>
     <param name="assisted_control" value="false"/>
 
