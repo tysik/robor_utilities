@@ -44,7 +44,7 @@
     <param name="max_v"        value="0.5"/>
     <param name="max_w"        value="3.0"/>
 
-    <param name="robot_frame_id" value="$(arg robot_frame)"/>
+    <param name="robot_frame_id"     value="$(arg robot_frame)"/>
     <param name="reference_frame_id" value="$(arg reference_frame)"/>
   </node>
 
@@ -99,6 +99,9 @@
     <param name="max_u"        value="0.4"/>
     <param name="max_v"        value="0.4"/>
     <param name="max_w"        value="2.7"/>
+
+    <param name="robot_frame_id"      value="$(arg robot_frame)"/>
+    <param name="reference_frame_id"  value="$(arg reference_frame)"/>
   </node>
 
 </launch>
