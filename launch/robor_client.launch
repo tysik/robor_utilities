@@ -149,7 +149,7 @@
     </node>
   </group>
 
-  <node name="urakubo_controller" pkg="robor_controllers" type="urakubo_controller" machine="usr_pc">
+  <node name="urakubo_controller" pkg="robor_controllers" type="urakubo_controller_node" machine="usr_pc">
     <param name="active"       value="false"/>
     <param name="run"          value="false"/>
 
@@ -157,9 +157,9 @@
 
     <param name="loop_rate"     value="$(arg loop_rate)"/>
 
-    <param name="a"            value="0.5"/>
-    <param name="b_"           value="2.5"/>
-    <param name="k_w"          value="0.1"/>
+    <param name="a"            value="0"/>
+    <param name="b_"           value="0"/>
+    <param name="k_w"          value="0"/>
     <param name="epsilon"      value="0.0001"/>
     <param name="kappa"        value="5.0"/>
 
@@ -169,10 +169,10 @@
 
     <param name="world_x"      value="0.0"/>
     <param name="world_y"      value="0.0"/>
-    <param name="world_radius" value="5.0"/>
+    <param name="world_radius" value="3.0"/>
 
-    <param name="max_u"        value="0.5"/>
-    <param name="max_v"        value="0.5"/>
+    <param name="max_u"        value="0.4"/>
+    <param name="max_v"        value="0.4"/>
     <param name="max_w"        value="2.0"/>
 
     <param name="robot_frame_id"      value="$(arg robot_frame)"/>
